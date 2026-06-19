@@ -1,0 +1,138 @@
+:root{
+    --green:#1b9c5d; --green-d:#147347; --ink:#1c2530; --muted:#5d6b7a;
+    --line:#e3e8ee; --bg:#f5f7f9; --card:#ffffff; --chip:#eaf6ef; --warn-bg:#fff7e6; --warn-line:#f0d28a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--green-d)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+  header.site{background:linear-gradient(135deg,#157a49,#1b9c5d);color:#fff;padding:26px 0 22px}
+  header.site h1{margin:0 0 6px;font-size:24px;letter-spacing:.5px}
+  header.site p{margin:0;opacity:.92;font-size:14px}
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .stat{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 14px;font-size:13px}
+  .stat b{font-size:20px;display:block;line-height:1.1}
+  .disclaimer{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;
+    padding:12px 16px;margin:18px 0;font-size:13px;color:#6b5618}
+  .disclaimer b{color:#8a6d10}
+  .view{display:none}
+  .view.active{display:block}
+  /* MAP */
+  .map-intro{margin:22px 0 10px;text-align:center}
+  .map-intro h2{margin:0 0 4px;font-size:19px}
+  .map-intro p{margin:0;color:var(--muted);font-size:14px}
+  .region{margin:18px 0}
+  .region-label{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);
+    font-weight:700;margin:0 0 10px}
+  .region-label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .region-label::after{content:"";flex:1;height:1px;background:var(--line)}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;
+    cursor:pointer;transition:.16s;text-align:left;position:relative;overflow:hidden}
+  .tile:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,115,71,.12)}
+  .tile .cty{font-size:17px;font-weight:700}
+  .tile .cnt{font-size:13px;color:var(--muted);margin-top:4px}
+  .tile .cnt b{color:var(--green-d);font-size:15px}
+  .tile.empty{opacity:.55;cursor:not-allowed}
+  .tile.empty:hover{transform:none;border-color:var(--line);box-shadow:none}
+  .tile .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--green);width:0}
+  /* SVG geo map */
+  .svgwrap{position:relative;background:linear-gradient(180deg,#eef4f8,#e7eef3);border:1px solid var(--line);
+    border-radius:16px;padding:8px;margin:6px auto 0;max-width:560px}
+  #svgMap svg{width:100%;height:auto;display:block}
+  #svgMap path{cursor:pointer;transition:filter .12s,stroke .12s}
+  #svgMap path.has:hover{filter:brightness(1.12);stroke:#0d5132;stroke-width:1.6}
+  #svgMap path.nodata{cursor:default}
+  .maptip{position:absolute;pointer-events:none;background:#1c2530;color:#fff;font-size:13px;
+    padding:6px 10px;border-radius:8px;opacity:0;transform:translate(-50%,-130%);white-space:nowrap;z-index:5;transition:opacity .1s}
+  .maptip b{color:#8fe3b6}
+  .legend{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+    font-size:12px;color:var(--muted);margin:12px 0 2px}
+  .legend .sw{width:16px;height:12px;border-radius:3px;display:inline-block;vertical-align:-1px;margin-right:3px}
+  .src-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);color:#fff;text-decoration:none;font-size:13px;
+    padding:8px 14px;border-radius:9px;font-weight:600}
+  .src-btn:hover{background:rgba(255,255,255,.26)}
+  #svgMap .cty-label{fill:#fff;stroke:#0d5132;stroke-width:3px;paint-order:stroke;
+    font-weight:700;font-size:15px;text-anchor:middle;pointer-events:none;font-family:inherit}
+  /* RWD：手機／平板 */
+  @media(max-width:640px){
+    header.site{padding:20px 0 18px}
+    header.site h1{font-size:20px}
+    header.site p{font-size:13px}
+    .wrap{padding:0 14px}
+    .stat b{font-size:18px}
+    .stat{padding:7px 11px}
+    .county-head h2{font-size:22px}
+    .county-head .official{font-size:12px;padding:6px 10px}
+    .cards{grid-template-columns:1fr}
+    .group-title{font-size:14px}
+    .disclaimer{font-size:12.5px;padding:11px 13px}
+    .map-intro h2{font-size:17px}
+    #svgMap .cty-label{font-size:17px}
+  }
+  @media(max-width:400px){
+    .tiles{grid-template-columns:1fr 1fr}
+  }
+  /* 候選人頭像版位 */
+  .chead{display:flex;align-items:center;gap:11px;margin-bottom:4px}
+  .avatar{width:46px;height:46px;border-radius:50%;flex:0 0 46px;display:flex;align-items:center;
+    justify-content:center;color:#fff;font-weight:700;font-size:19px;overflow:hidden;position:relative;
+    background:var(--ac,#1b9c5d);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .chead .name{margin:0}
+  .social{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;border-top:1px dashed var(--line);padding-top:9px}
+  .sbtn{font-size:11.5px;padding:3px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid var(--line);line-height:1.7}
+  .sbtn.fb{background:#1877f2;color:#fff;border-color:#1877f2}
+  .sbtn.ig{background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);color:#fff;border:none}
+  .sbtn.search{background:#fff;color:var(--muted)}
+  .sbtn.search:hover{border-color:var(--green);color:var(--green-d)}
+  /* Fancybox 縣市彈窗 */
+  .fb-county{background:#fff;border-radius:16px;padding:20px 22px 24px;max-width:940px;width:92vw;max-height:88vh;overflow:auto}
+  .fb-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;
+    border-bottom:2px solid var(--line);padding-bottom:12px}
+  .fb-head h2{margin:0;font-size:25px}
+  .fb-sub{color:var(--muted);font-size:13px;margin-top:3px}
+  .fb-search{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:15px;margin:14px 0 2px}
+  .fb-county .cards{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+  @media(max-width:640px){
+    .fb-county{padding:16px 14px 20px}
+    .fb-head h2{font-size:20px}
+    .fb-county .cards{grid-template-columns:1fr}
+  }
+  /* COUNTY */
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--green-d);
+    font-size:14px;cursor:pointer;padding:14px 0 6px;font-weight:600}
+  .county-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;
+    border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:4px}
+  .county-head h2{margin:0;font-size:26px}
+  .county-head .sub{color:var(--muted);font-size:13px}
+  .official{font-size:13px;background:var(--chip);color:var(--green-d);border:1px solid #cfe9da;
+    padding:7px 12px;border-radius:8px;text-decoration:none;display:inline-block}
+  .group-title{font-size:15px;font-weight:700;margin:22px 0 10px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .group-title .pill{background:var(--green);color:#fff;font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card .name{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+  .badge.lead{background:#fde9d0;color:#9a5a12}
+  .badge.coun{background:var(--chip);color:var(--green-d)}
+  .kv{font-size:13px;margin-top:9px}
+  .kv .k{color:var(--muted);width:62px;display:inline-block;vertical-align:top}
+  .kv .v{color:var(--ink)}
+  .acct{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:14px;font-weight:600;letter-spacing:.4px}
+  .copy{margin-left:6px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:11px;
+    padding:1px 7px;cursor:pointer;color:var(--muted)}
+  .copy:hover{border-color:var(--green);color:var(--green-d)}
+  .holder{font-size:11.5px;color:var(--muted);margin-top:9px;border-top:1px dashed var(--line);padding-top:8px;word-break:break-all}
+  .empty-note{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:20px;color:var(--muted);font-size:14px;text-align:center}
+  .searchbar{margin:14px 0 0}
+  .searchbar input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+  footer{margin:34px 0 50px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  footer h3{font-size:13px;color:var(--ink);margin:0 0 6px}
+  footer ul{margin:0 0 10px;padding-left:18px}
+  footer a{word-break:break-all}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:99999}
+  .toast.show{opacity:.95}
