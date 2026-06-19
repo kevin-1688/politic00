@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 民進黨提名人政治獻金專戶查詢｜全台縣市</title>
+<style>
+  :root{
+    --green:#1b9c5d; --green-d:#147347; --ink:#1c2530; --muted:#5d6b7a;
+    --line:#e3e8ee; --bg:#f5f7f9; --card:#ffffff; --chip:#eaf6ef; --warn-bg:#fff7e6; --warn-line:#f0d28a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  a{color:var(--green-d)}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 18px}
+  header.site{background:linear-gradient(135deg,#157a49,#1b9c5d);color:#fff;padding:26px 0 22px}
+  header.site h1{margin:0 0 6px;font-size:24px;letter-spacing:.5px}
+  header.site p{margin:0;opacity:.92;font-size:14px}
+  .stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .stat{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:10px;padding:8px 14px;font-size:13px}
+  .stat b{font-size:20px;display:block;line-height:1.1}
+  .disclaimer{background:var(--warn-bg);border:1px solid var(--warn-line);border-radius:10px;
+    padding:12px 16px;margin:18px 0;font-size:13px;color:#6b5618}
+  .disclaimer b{color:#8a6d10}
+  .view{display:none}
+  .view.active{display:block}
+  /* MAP */
+  .map-intro{margin:22px 0 10px;text-align:center}
+  .map-intro h2{margin:0 0 4px;font-size:19px}
+  .map-intro p{margin:0;color:var(--muted);font-size:14px}
+  .region{margin:18px 0}
+  .region-label{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted);
+    font-weight:700;margin:0 0 10px}
+  .region-label::before{content:"";width:8px;height:8px;border-radius:50%;background:var(--green)}
+  .region-label::after{content:"";flex:1;height:1px;background:var(--line)}
+  .tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+  .tile{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 14px 12px;
+    cursor:pointer;transition:.16s;text-align:left;position:relative;overflow:hidden}
+  .tile:hover{border-color:var(--green);transform:translateY(-2px);box-shadow:0 8px 20px rgba(20,115,71,.12)}
+  .tile .cty{font-size:17px;font-weight:700}
+  .tile .cnt{font-size:13px;color:var(--muted);margin-top:4px}
+  .tile .cnt b{color:var(--green-d);font-size:15px}
+  .tile.empty{opacity:.55;cursor:not-allowed}
+  .tile.empty:hover{transform:none;border-color:var(--line);box-shadow:none}
+  .tile .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--green);width:0}
+  /* COUNTY */
+  .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--green-d);
+    font-size:14px;cursor:pointer;padding:14px 0 6px;font-weight:600}
+  .county-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;
+    border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:4px}
+  .county-head h2{margin:0;font-size:26px}
+  .county-head .sub{color:var(--muted);font-size:13px}
+  .official{font-size:13px;background:var(--chip);color:var(--green-d);border:1px solid #cfe9da;
+    padding:7px 12px;border-radius:8px;text-decoration:none;display:inline-block}
+  .group-title{font-size:15px;font-weight:700;margin:22px 0 10px;color:var(--ink);display:flex;align-items:center;gap:8px}
+  .group-title .pill{background:var(--green);color:#fff;font-size:12px;padding:2px 9px;border-radius:20px;font-weight:600}
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .card .name{font-size:17px;font-weight:700;display:flex;align-items:center;gap:8px}
+  .badge{font-size:11px;padding:2px 8px;border-radius:20px;font-weight:600}
+  .badge.lead{background:#fde9d0;color:#9a5a12}
+  .badge.coun{background:var(--chip);color:var(--green-d)}
+  .kv{font-size:13px;margin-top:9px}
+  .kv .k{color:var(--muted);width:62px;display:inline-block;vertical-align:top}
+  .kv .v{color:var(--ink)}
+  .acct{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-size:14px;font-weight:600;letter-spacing:.4px}
+  .copy{margin-left:6px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:11px;
+    padding:1px 7px;cursor:pointer;color:var(--muted)}
+  .copy:hover{border-color:var(--green);color:var(--green-d)}
+  .holder{font-size:11.5px;color:var(--muted);margin-top:9px;border-top:1px dashed var(--line);padding-top:8px;word-break:break-all}
+  .empty-note{background:var(--card);border:1px dashed var(--line);border-radius:12px;padding:20px;color:var(--muted);font-size:14px;text-align:center}
+  .searchbar{margin:14px 0 0}
+  .searchbar input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:15px}
+  footer{margin:34px 0 50px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+  footer h3{font-size:13px;color:var(--ink);margin:0 0 6px}
+  footer ul{margin:0 0 10px;padding-left:18px}
+  footer a{word-break:break-all}
+  .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none}
+  .toast.show{opacity:.95}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>2026 民進黨提名人・政治獻金專戶</h1>
+    <p>全台各縣市民主進步黨提名之縣市長／議員　政治獻金「收款專戶」一覽（資料來源：監察院公告）</p>
+    <div class="stat-row" id="statRow"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="disclaimer">
+    <b>請務必閱讀：</b>本站資料整理自監察院「政治獻金專戶公告資料」公開查詢系統（查詢日：<b>2026/06/19</b>，民國115年地方選舉）。
+    黨籍係比對<b>民進黨提名／徵召名單</b>後篩選，官方公告本身不含黨籍欄位，可能有同名誤判。2026 選舉在 11 月舉行，專戶仍<b>陸續公告中</b>，名單未必齊全。
+    <b>捐款前，請務必至監察院平台再次核對戶名與帳號</b>，本站不對任何匯款結果負責。
+  </div>
+
+  <!-- HOME -->
+  <section id="home" class="view active">
+    <div class="map-intro">
+      <h2>請點選縣市</h2>
+      <p>依地理區排列，數字為「已公告專戶」之民進黨提名人數</p>
+    </div>
+    <div id="mapArea"></div>
+  </section>
+
+  <!-- COUNTY -->
+  <section id="county" class="view">
+    <button class="back" onclick="showHome()">← 返回地圖</button>
+    <div class="county-head">
+      <div>
+        <h2 id="cName"></h2>
+        <div class="sub" id="cSub"></div>
+      </div>
+      <a class="official" id="cOfficial" target="_blank" rel="noopener">在監察院官網查詢／核對 ↗</a>
+    </div>
+    <div class="searchbar"><input id="cSearch" placeholder="輸入姓名篩選…" oninput="renderCounty(CURRENT,this.value)"></div>
+    <div id="cBody"></div>
+  </section>
+
+  <footer>
+    <h3>資料來源與方法</h3>
+    <ul>
+      <li>政治獻金專戶（戶名／金融機構／帳號）：<a href="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0" target="_blank" rel="noopener">監察院陽光法令主題網－政治獻金專戶公告資料</a>（115年直轄市市長／縣市長／直轄市議員／縣市議員選舉，擬參選人類別）。</li>
+      <li>會計報告書另可查：<a href="https://ardata.cy.gov.tw" target="_blank" rel="noopener">監察院政治獻金公開查閱平臺</a>。</li>
+      <li>民進黨提名／徵召名單：<a href="https://zh.wikipedia.org/wiki/2026年地方公職人員選舉民主進步黨提名結果列表" target="_blank" rel="noopener">維基百科彙整</a>（引用中央社、自由時報、民主進步黨官網等）。</li>
+    </ul>
+    <p>本站僅為公開資料之整理與導覽，所有帳號均為候選人依《政治獻金法》設立、經監察院許可公告之「收受捐款專戶」。資料可能因官方滾動更新而變動，正確性以監察院公告為準。</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ===== 資料：name | county | bank | account | role  （115年/2026，監察院公告，查詢日2026-06-19） ===== */
+const RAW = `
+沈伯洋|臺北市|臺灣土地銀行營業部|041005616067|市長
+何欣純|臺中市|中華郵政股份有限公司臺中南屯路郵局|郵政劃撥22878505|市長
+黃世杰|桃園市|第一商業銀行西壢分行|28251032268|市長
+蘇巧慧|新北市|華南商業銀行樹林分行|191200686158|市長
+陳亭妃|臺南市|合作金庫商業銀行成功分行|0310717077881|市長
+賴瑞隆|高雄市|臺灣銀行新興分行|061004656314|市長
+莊競程|新竹市|永豐商業銀行光華分行|03201800239931|市長
+周春米|屏東縣|臺灣銀行屏東分行|017008418239|縣長
+王美惠|嘉義市|臺灣銀行群賢分行|162001008859|市長
+童子瑋|基隆市|基隆第一信用合作社忠二路分社|0042200303595|市長
+黃明太|高雄市|彰化商業銀行路竹分行|95475007900100|議員
+黃崇真|桃園市|臺灣銀行亞矽創新分行|297001008521|議員
+蔡耀頡|臺中市|合作金庫商業銀行太平分行|1128717730968|議員
+陳皇宇|臺南市|臺南市龍崎區農會本會|56501010029626|議員
+鄭功進|臺中市|臺灣新光商業銀行台中分行|0347103686666|議員
+沈家鳳|臺南市|中國信託商業銀行新營分行|148540472351|議員
+陳秋宏|臺南市|中華郵政股份有限公司下營郵局|01911190433192|議員
+江瑞鴻|高雄市|中華郵政股份有限公司仁武郵局|00415210547014|議員
+蔡怡萱|臺中市|(農會)臺中市豐原區農會本會|01107210688791|議員
+謝家宜|臺中市|合作金庫商業銀行軍功分行|1656717143511|議員
+巫振興|高雄市|中華郵政股份有限公司高雄佛公郵局|00414440203154|議員
+李倩萍|新北市|中華郵政股份有限公司蘆洲中原路郵局|郵政劃撥50486954|議員
+王珮毓|桃園市|中華郵政股份有限公司平鎮郵局|郵政劃撥50486901|議員
+張勝富|高雄市|中華郵政股份有限公司大社郵局|00413400522059|議員
+何翊綾|臺中市|第一商業銀行臺中分行|40152181662|議員
+吳中源|臺中市|第一商業銀行大甲分行|42350480698|議員
+胡家智|桃園市|中國信託商業銀行南崁分行|510540965506|議員
+黃家齊|桃園市|中華郵政股份有限公司桃園南門郵局|郵政劃撥50486760|議員
+賴俊翰|臺北市|合作金庫商業銀行延平分行|0040717318881|議員
+周嘉韋|臺南市|陽信商業銀行台南分行|065420408492|議員
+唐儀靜|臺南市|合作金庫商業銀行臺南分行|0300717125936|議員
+陳碧玉|臺南市|京城商業銀行新市分行|029120260772|議員
+鄭佳欣|臺南市|彰化商業銀行歸仁分行|62660166639900|議員
+王孝維|臺北市|台北富邦商業銀行內湖分行|82110000772138|議員
+余柷青|臺南市|中華郵政股份有限公司新化郵局|郵政劃撥31658794|議員
+林慧欣|高雄市|合作金庫商業銀行美濃分行|5757717725656|議員
+謝舒凡|臺南市|中華郵政股份有限公司學甲郵局|郵政劃撥31658860|議員
+李雨庭|高雄市|第一商業銀行林園分行|73350139577|議員
+陳韋任|新北市|玉山商業銀行北新分行|0901968112016|議員
+曾威|臺中市|臺灣中小企業銀行烏日分行|48362255808|議員
+鄭宇恩|新北市|華南商業銀行淡水分行|167202247979|議員
+謝志忠|臺中市|三信商業銀行豐原分行|1420030884|議員
+王立任|臺中市|國泰世華商業銀行沙鹿分行|256506375538|議員
+張維倩|新北市|華南商業銀行南永和分行|169200908532|議員
+張耀中|高雄市|高雄銀行大發分行|227210837986|議員
+許清順|桃園市|臺灣土地銀行南崁分行|096005501137|議員
+陳岱吟|新北市|中華郵政股份有限公司新莊郵局|郵政劃撥50486381|議員
+陳金鐘|臺南市|元大商業銀行府東分行|20692000129981|議員
+彭一書|新北市|中華郵政股份有限公司土城清水郵局|03111300695563|議員
+黃敬雅|高雄市|國泰世華商業銀行南高雄分行|061506258846|議員
+吳昱鋒|高雄市|國泰世華商業銀行南高雄分行|061506258862|議員
+洪村銘|高雄市|高雄銀行大發分行|227210837994|議員
+陳俊維|新北市|聯邦商業銀行三重分行|007109002358|議員
+賴懋慶|臺南市|中華郵政股份有限公司善化郵局|郵政劃撥31658738|議員
+江肇國|臺中市|三信商業銀行林森分行|0820086581|議員
+林建南|臺南市|聯邦商業銀行台南分行|012100055190|議員
+陳俞融|臺中市|國泰世華商業銀行健行分行|237506240417|議員
+游吾和|桃園市|中華郵政股份有限公司大園郵局|01213131074620|議員
+廖宜琨|新北市|臺灣土地銀行三峽分行|112005888126|議員
+蔡秋蘭|臺南市|中華郵政股份有限公司西港郵局|郵政劃撥31658816|議員
+朱正軒|臺南市|中華郵政股份有限公司永康網寮郵局|郵政劃撥31658781|議員
+李宗豪|桃園市|臺灣銀行桃園分行|026001173321|議員
+李宗翰|臺南市|中華郵政股份有限公司後壁郵局|01910590249777|議員
+陳琳潔|高雄市|華泰商業銀行北高雄分行|3561000019138|議員
+陳聖文|臺北市|中華郵政股份有限公司木柵郵局|郵政劃撥50486497|議員
+黃盈淇|桃園市|玉山商業銀行楊梅分行|0369968222006|議員
+黃瓊慧|桃園市|中華郵政股份有限公司桃園成功路郵局|郵政劃撥50486550|議員
+鄭光峰|高雄市|陽信商業銀行小港分行|093420013008|議員
+戴翎育|新北市|新北市淡水信用合作社泰山分社|00122110111250|議員
+吳奕萱|新北市|永豐商業銀行新泰分行|01001800079365|議員
+邱婷蔚|新北市|永豐商業銀行正義分行|12801801709678|議員
+張曉昀|桃園市|華南商業銀行內壢分行|251200197235|議員
+何權峰|高雄市|高雄銀行營業部|101210376594|議員
+洪健益|臺北市|聯邦商業銀行永吉分行|047103009186|議員
+張以理|高雄市|高雄銀行北高雄分行|241210915998|議員
+郭建盟|高雄市|高雄銀行建國分行|220210185020|議員
+郭鴻儀|臺南市|陽信商業銀行仁德分行|117420013858|議員
+陳淑華|臺中市|板信商業銀行台中分行|04285000111258|議員
+陳慧文|高雄市|華南商業銀行五甲分行|752200636579|議員
+彭佳芸|新北市|第一商業銀行重陽分行|21650183485|議員
+蔡美華|新北市|臺灣銀行群賢分行|162001008875|議員
+蔡蘇秋金|臺南市|京城商業銀行佳里分行|013120230632|議員
+張家銨|臺中市|中華郵政股份有限公司大肚蔗廍郵局|郵政劃撥22878455|議員
+陳怡潔|臺北市|合作金庫商業銀行士林分行|0470717604101|議員
+簡嘉佑|臺中市|合作金庫商業銀行北臺中分行|1601717830773|議員
+蘇致榮|高雄市|臺灣土地銀行鳳山分行|051005975011|議員
+李余典|新北市|新北市三重區農會本會|77601010001417|議員
+張銘祐|臺北市|中華郵政股份有限公司臺北華江橋郵局|郵政劃撥50486274|議員
+陳雅惠|臺中市|國泰世華商業銀行東臺中分行|235035018856|議員
+黃文志|高雄市|中華郵政股份有限公司楠梓後勁郵局|00416610215913|議員
+黃文益|高雄市|臺灣銀行新興分行|061004656688|議員
+呂維胤|臺南市|陽信商業銀行健康分行|066420062239|議員
+李天生|臺中市|京城商業銀行大里分行|089120027477|議員
+周麗津|臺南市|陽信商業銀行西華分行|069420035711|議員
+楊典忠|臺中市|彰化商業銀行清水分行|58215006885000|議員
+蔡秉璁|高雄市|臺灣銀行岡山分行|060008377904|議員
+魏筠|桃園市|臺灣銀行中壢分行|041008847142|議員
+李宇翔|新北市|凱基商業銀行林口分行|60580100000923|議員
+周永鴻|臺中市|中華郵政股份有限公司神岡社口郵局|郵政劃撥22878471|議員
+林子揚|臺北市|中華郵政股份有限公司臺北大同郵局|郵政劃撥50486290|議員
+林志誠|高雄市|高雄銀行橋頭科學園區分行|218210778166|議員
+張玉嬿|臺中市|三信商業銀行太平分行|3920006211|議員
+張佩芸|桃園市|華南商業銀行觀音分行|260201524888|議員
+張嘉玲|新北市|臺灣銀行中和分行|066001038674|議員
+張肇良|桃園市|中華郵政股份有限公司龍潭郵局|02813051161885|議員
+陳怡潔|臺中市|中華郵政股份有限公司清水郵局|郵政劃撥22878468|議員
+陳秋萍|臺南市|兆豐國際商業銀行永康分行|05010755899|議員
+陳雅倫|桃園市|桃園市龜山區農會大崗分部|76802010011542|議員
+彭俊豪|桃園市|合作金庫商業銀行中原分行|1391717223066|議員
+黃守達|臺中市|華南商業銀行五權分行|427200678000|議員
+鄧巧佩|高雄市|高雄銀行鳳山分行|200210109365|議員
+王宣貿|臺南市|臺灣土地銀行新營分行|030001083305|議員
+王閔生|臺北市|第一商業銀行景美分行|10650069832|議員
+吳昇翰|新北市|板信商業銀行金城分行|03945006888868|議員
+林延鳳|臺北市|合作金庫商業銀行北士林分行|5089717522221|議員
+林秉宥|新北市|國泰世華商業銀行丹鳳分行|133500205695|議員
+林智鴻|高雄市|高雄銀行市府分行|235210617717|議員
+張錦豪|新北市|中華郵政股份有限公司汐止社后郵局|郵政劃撥50486311|議員
+許家睿|桃園市|兆豐國際商業銀行八德分行|06110298007|議員
+郭品辰|臺南市|京城商業銀行安南分行|032120331220|議員
+陳慈慧|臺北市|台北富邦商業銀行社子分行|82110000773068|議員
+游明諺|新北市|第一商業銀行淡水分行|21850066370|議員
+項柏翰|桃園市|中華郵政股份有限公司楊梅郵局|郵政劃撥50485991|議員
+劉仁照|桃園市|中國信託商業銀行南中壢分行|175540662707|議員
+劉耀仁|臺北市|第一商業銀行雙園分行|18350188088|議員
+顏蔚慈|新北市|中華郵政股份有限公司蘆洲郵局|24411500990523|議員
+李喬如|高雄市|高雄銀行鼓山分行|219210418239|議員
+林祈烽|臺中市|臺灣新光商業銀行西屯分行|0903100178528|議員
+林鈺梅|臺中市|中華郵政股份有限公司大雅清泉崗郵局|00210910436427|議員
+林德宇|臺中市|高雄銀行大里分行|233210606500|議員
+施志昌|臺中市|國泰世華商業銀行大甲分行|113506294699|議員
+洪婉臻|臺北市|台北富邦商業銀行萬華分行|82210000152602|議員
+陳映辰|臺中市|臺灣銀行大雅分行|090001045218|議員
+曾咨耀|臺中市|台中商業銀行軍功分行|029220165568|議員
+蔡筱薇|臺南市|陽信商業銀行東寧分行|067420022962|議員
+羅文崇|新北市|中華郵政股份有限公司永和秀朗郵局|郵政劃撥50486196|議員
+山田摩衣|新北市|華南商業銀行華江分行|159201238409|議員
+沈震南|臺南市|中華郵政股份有限公司臺南大光郵局|郵政劃撥31658712|議員
+林富寶|高雄市|中華郵政股份有限公司旗山郵局|郵政劃撥42376398|議員
+林裔綺|新北市|新北市瑞芳區漁會本會|51301010002395|議員
+翁震州|新北市|華南商業銀行北新莊分行|197200150013|議員
+張芬郁|臺中市|台中商業銀行內新分行|023221110427|議員
+許淑華|臺北市|臺灣中小企業銀行永春分行|10362160516|議員
+郭凡|臺北市|台北富邦商業銀行民生分行|82210000152505|議員
+陳賢蔚|臺北市|台北富邦商業銀行市府分行|82110000818100|議員
+蔡麗青|臺南市|中華郵政股份有限公司臺南安南郵局|00313610468717|議員
+戴瑋姍|新北市|台新國際商業銀行江翠分行|20941000433264|議員
+簡舒培|臺北市|台北富邦商業銀行市府分行|82110000800006|議員
+尹立|高雄市|中華郵政股份有限公司左營新莊仔郵局|郵政劃撥42376448|議員
+何孟樺|臺北市|中華郵政股份有限公司內湖郵局|郵政劃撥50486064|議員
+李昆穎|新北市|台北富邦商業銀行板南分行|82210000152530|議員
+李雅慧|高雄市|中華郵政股份有限公司左營福山郵局|00418910148177|議員
+卓冠廷|新北市|華南商業銀行鶯歌分行|196200337777|議員
+林世宗|臺北市|台北富邦商業銀行市府分行|82110000888728|議員
+林依婷|臺南市|陽信商業銀行健康分行|066420062215|議員
+林亮君|臺北市|玉山商業銀行民權分行|0598968194673|議員
+邱俊憲|高雄市|高雄銀行九如分行|221102341178|議員
+馬郁雯|臺北市|國泰世華商業銀行臺北分行|007506202960|議員
+高嘉瑜|臺北市|台北富邦商業銀行行善分行|82210000152440|議員
+康裕成|高雄市|高雄銀行灣內分行|214102142578|議員
+張文潔|臺北市|台北富邦商業銀行市府分行|82110001600108|議員
+張志豪|新北市|中華郵政股份有限公司中和郵局|03117100691405|議員
+張志豪|臺北市|中華郵政股份有限公司臺北逸仙郵局|郵政劃撥50485831|議員
+張耀中|臺中市|國泰世華商業銀行市政分行|234035017136|議員
+陳乃瑜|新北市|中華郵政股份有限公司新店郵局|03114160529148|議員
+陳又新|臺北市|台北富邦商業銀行西湖分行|82110000772096|議員
+陳信秀|臺中市|臺灣銀行水湳分行|109001045342|議員
+陳俊諺|新北市|臺灣土地銀行板橋分行|050212095459|議員
+湯詠瑜|高雄市|臺灣土地銀行中正分行|059001165741|議員
+黃淑君|新北市|中華郵政股份有限公司板橋莒光郵局|03110660778351|議員
+劉品妡|臺北市|第一商業銀行景美分行|10668133222|議員
+蔡永芳|桃園市|彰化商業銀行八德分行|57725008582000|議員
+鄭孟洳|高雄市|中華郵政股份有限公司高雄大順郵局|郵政劃撥42376357|議員
+簡煥宗|高雄市|高雄銀行鼓山分行|219210418220|議員
+顏若芳|臺北市|台北富邦商業銀行市府分行|82110001600000|議員
+陳玉鈴|南投縣|臺灣中小企業銀行竹山分行|53062895833|議員
+方文正|屏東縣|臺灣新光商業銀行東港分行|0781100013688|議員
+陳秋蓉|彰化縣|聯邦商業銀行員林分行|013100038195|議員
+施乃如|新竹市|新竹第一信用合作社東南分社|00200400113503|議員
+簡維國|臺東縣|合作金庫商業銀行臺東分行|0390717505142|議員
+黃大祐|嘉義市|臺灣新光商業銀行北嘉義分行|0666101010777|議員
+林群力|雲林縣|(農會)雲林縣莿桐鄉農會本會|00090212255760|議員
+許展維|屏東縣|合作金庫商業銀行萬丹分行|5827717821921|議員
+蔣煙燈|彰化縣|第一商業銀行鹿港分行|46250652376|議員
+周君綾|彰化縣|台北富邦商業銀行和美分行|82210000156489|議員
+黃露慧|嘉義市|陽信商業銀行嘉義分行|063010076517|議員
+方冠丁|屏東縣|中華郵政股份有限公司新園郵局|00716560294052|議員
+陳炫諭|臺東縣|元大商業銀行東信分行|20522000064146|議員
+潘炩禕|屏東縣|臺灣銀行潮州分行|088004769454|議員
+高明達|雲林縣|中華郵政股份有限公司斗南郵局|郵政劃撥22878912|議員
+利八魁|屏東縣|屏東縣內埔地區農會本會|74901010000318|議員
+賴澤民|彰化縣|合作金庫商業銀行員林分行|0240717128746|議員
+羅平道|屏東縣|中華郵政股份有限公司佳冬郵局|郵政劃撥42376764|議員
+曾怡芳|基隆市|基隆第一信用合作社百福分社|0130200003603|議員
+吳亭亭|苗栗縣|中華郵政股份有限公司竹南郵局|02912381162448|議員
+李世斌|屏東縣|臺灣新光商業銀行東園分行|0967100186025|議員
+陳宜|基隆市|中華郵政股份有限公司基隆信義郵局|00111240449785|議員
+洪巧娟|南投縣|中華郵政股份有限公司草屯郵局|04011001270700|議員
+陳怡岳|嘉義縣|(農會)嘉義縣朴子市農會本會|00024212504001|議員
+曾煥燁|彰化縣|第一商業銀行和美分行|47150217865|議員
+田珍綺|花蓮縣|中華郵政股份有限公司花蓮國安郵局|00910030720360|議員
+徐國銘|屏東縣|中華郵政股份有限公司里港郵局|00712610483561|議員
+曾國維|新竹市|臺灣銀行六家分行|248001038998|議員
+林峻輔|宜蘭縣|兆豐國際商業銀行羅東分行|22810185388|議員
+林詩穎|宜蘭縣|宜蘭縣頭城鎮農會本會|58501010003539|議員
+郭佩瑄|雲林縣|中華郵政股份有限公司麥寮郵局|03012690556492|議員
+陳光軒|苗栗縣|中華郵政股份有限公司頭份上公園郵局|郵政劃撥22878427|議員
+楊玲宜|新竹市|臺灣土地銀行東新竹分行|103001022176|議員
+廖崑堯|南投縣|第一商業銀行埔里分行|44250456033|議員
+李清聖|屏東縣|中華郵政股份有限公司屏東公館郵局|郵政劃撥42376658|議員
+莊依婕|花蓮縣|花蓮第二信用合作社中山分社|02000100034016|議員
+劉珊伶|彰化縣|彰化第六信用合作社埔心分社|1242000006830|議員
+林世明|彰化縣|臺灣銀行彰化分行|016001178324|議員
+邱毓興|苗栗縣|玉山商業銀行竹南分行|0440968388176|議員
+胡仁順|花蓮縣|中華郵政股份有限公司花蓮中華路郵局|00911390179626|議員
+曾奕豪|嘉義市|國泰世華商業銀行嘉義分行|036035011263|議員
+劉彥伶|新竹市|中國信託商業銀行關埔分行|131540347192|議員
+林麗|宜蘭縣|中華郵政股份有限公司宜蘭中山路郵局|郵政劃撥50486600|議員
+凌子楚|嘉義市|玉山商業銀行東嘉義分行|0509968556177|議員
+楊子賢|彰化縣|中國信託商業銀行彰化分行|428541282134|議員
+潘筱潔|屏東縣|中華郵政股份有限公司萬巒郵局|00715210304433|議員
+陳軍佐|基隆市|基隆第一信用合作社信二路分社|0060200304483|議員
+藍駿宇|彰化縣|彰化第六信用合作社秀水分社|0942000060623|議員
+李姿婷|宜蘭縣|合作金庫商業銀行宜蘭分行|0130717230656|議員
+陳詩弦|苗栗縣|中華郵政股份有限公司頭份上公園郵局|02913320193643|議員
+游國連|宜蘭縣|中華郵政股份有限公司宜蘭金六結郵局|01110130200309|議員
+詹琬惠|彰化縣|台中商業銀行社頭分行|071221119224|議員
+吳巧瀅|基隆市|中華郵政股份有限公司基隆愛三路郵局|00110021883021|議員
+李俊諭|彰化縣|中華郵政股份有限公司溪州郵局|郵政劃撥22878681|議員
+洪如萍|雲林縣|(農會)雲林縣崙背鄉農會本會|00126211798300|議員
+洪騰明|彰化縣|中華郵政股份有限公司二林郵局|00813800946481|議員
+蔡嘉峻|雲林縣|中華郵政股份有限公司麥寮郵局|03012690556504|議員
+林世賢|彰化縣|臺灣中小企業銀行彰化分行|54062646198|議員
+饒怡君|屏東縣|臺灣銀行屏東分行|017008417883|議員
+李淑芬|宜蘭縣|宜蘭縣礁溪鄉農會本會|58701010142668|議員
+林士凱|新竹市|凱基商業銀行新竹分行|60230100001832|議員
+黃永翔|基隆市|中華郵政股份有限公司基隆愛三路郵局|00110021883035|議員
+蔡岳儒|雲林縣|中華郵政股份有限公司北港郵局|郵政劃撥22878609|議員
+沈夙崢|南投縣|國泰世華商業銀行南投分行|108506420976|議員
+陳思伃|花蓮縣|中國信託商業銀行花蓮分行|197540312349|議員
+黃紀仁|基隆市|中華郵政股份有限公司基隆安瀾橋郵局|00111550308099|議員
+方一祥|屏東縣|中華郵政股份有限公司屏東公館郵局|郵政劃撥42376476|議員
+洪子超|彰化縣|中華郵政股份有限公司二林郵局|00813800946507|議員
+歐陽霆|新竹縣|中國信託商業銀行竹北分行|034540853822|議員
+蔡侑庭|屏東縣|中華郵政股份有限公司屏東民生路郵局|郵政劃撥42376513|議員
+王秋淑|南投縣|中華郵政股份有限公司魚池郵局|郵政劃撥22878430|議員
+張之豪|基隆市|凱基商業銀行基隆分行|60280100001578|議員
+莊陞漢|彰化縣|合作金庫商業銀行彰化分行|0230717157376|議員
+陳財能|花蓮縣|花蓮第二信用合作社中正分社|05000100024458|議員
+蔡銘軒|南投縣|臺灣土地銀行草屯分行|082005481828|議員
+余筱菁|新竹縣|中國信託商業銀行竹北分行|034540853411|議員
+邵啟月|新竹縣|中國信託商業銀行竹北分行|034540853602|議員
+蔡永順|雲林縣|中華郵政股份有限公司麥寮郵局|03012690556400|議員
+張欣倩|彰化縣|合作金庫商業銀行員新分行|5609717390761|議員
+陳建名|新竹市|新竹第一信用合作社延平分社|01300400046913|議員
+陳漢澤|宜蘭縣|臺灣銀行宜蘭分行|022001131264|議員
+廖郁賢|雲林縣|中華郵政股份有限公司斗六西平路郵局|03010081388283|議員
+蘇育德|澎湖縣|中華郵政股份有限公司馬公中正路郵局|02410061660841|議員
+吳驊珈|基隆市|基隆第一信用合作社大武崙分社|0103200310020|議員
+林煒軒|嘉義市|中華郵政股份有限公司嘉義玉山郵局|郵政劃撥31658691|議員
+張庭綺|雲林縣|中華郵政股份有限公司虎尾郵局|郵政劃撥22878392|議員
+許明對|嘉義市|中華郵政股份有限公司嘉義玉山郵局|郵政劃撥31658493|議員
+曾翰揚|新竹市|中華郵政股份有限公司新竹武昌街郵局|00610042224131|議員
+謝家倫|宜蘭縣|兆豐國際商業銀行羅東分行|22810186800|議員
+`.trim();
+
+/* 選舉種類代碼（供官網連結對應） */
+const ELECTION = {
+  "直轄市":{mayor:"115年直轄市市長選舉",coun:"115年直轄市議員選舉"},
+  "縣市":{mayor:"115年縣(市)長選舉",coun:"115年縣(市)議員選舉"}
+};
+const SPECIAL = {"臺北市":1,"新北市":1,"桃園市":1,"臺中市":1,"臺南市":1,"高雄市":1}; // 直轄市
+
+/* 縣市分區（北→南→東→離島） */
+const REGIONS = [
+  ["北部",["基隆市","臺北市","新北市","桃園市","新竹市","新竹縣","苗栗縣"]],
+  ["中部",["臺中市","彰化縣","南投縣","雲林縣"]],
+  ["南部",["嘉義市","嘉義縣","臺南市","高雄市","屏東縣"]],
+  ["東部",["宜蘭縣","花蓮縣","臺東縣"]],
+  ["離島",["澎湖縣","金門縣","連江縣"]]
+];
+
+/* 解析資料 */
+const PEOPLE = RAW.split("\n").map(l=>{
+  const [name,county,bank,acct,role]=l.split("|");
+  return {name,county,bank,acct,role};
+});
+const BY_COUNTY={};
+PEOPLE.forEach(p=>{(BY_COUNTY[p.county]=BY_COUNTY[p.county]||[]).push(p)});
+
+let CURRENT=null;
+
+/* 戶名重建 */
+function holderName(p){
+  return `115年${p.county}${p.role}擬參選人${p.name}政治獻金專戶`;
+}
+
+/* 首頁統計 */
+function buildStats(){
+  const total=PEOPLE.length;
+  const leads=PEOPLE.filter(p=>p.role!=="議員").length;
+  const couns=PEOPLE.filter(p=>p.role==="議員").length;
+  const counties=Object.keys(BY_COUNTY).length;
+  document.getElementById("statRow").innerHTML=
+    `<div class="stat"><b>${total}</b>已公告專戶人數</div>`+
+    `<div class="stat"><b>${leads}</b>縣市長／市長</div>`+
+    `<div class="stat"><b>${couns}</b>縣市／直轄市議員</div>`+
+    `<div class="stat"><b>${counties}</b>個縣市有資料</div>`;
+}
+
+/* 地圖 */
+function buildMap(){
+  let html="";
+  REGIONS.forEach(([region,counties])=>{
+    html+=`<div class="region"><div class="region-label">${region}</div><div class="tiles">`;
+    counties.forEach(c=>{
+      const list=BY_COUNTY[c]||[];
+      const n=list.length;
+      if(n===0){
+        html+=`<div class="tile empty"><div class="cty">${c}</div><div class="cnt">尚無公告專戶</div></div>`;
+      }else{
+        const lead=list.filter(p=>p.role!=="議員").length;
+        html+=`<div class="tile" onclick="showCounty('${c}')">
+          <div class="cty">${c}</div>
+          <div class="cnt"><b>${n}</b> 位　${lead?`含首長 ${lead}`:"議員"}</div>
+          <div class="bar" style="width:${Math.min(100,n*4)}%"></div></div>`;
+      }
+    });
+    html+="</div></div>";
+  });
+  document.getElementById("mapArea").innerHTML=html;
+}
+
+/* 縣市頁 */
+function showCounty(c){
+  CURRENT=c;
+  document.getElementById("home").classList.remove("active");
+  document.getElementById("county").classList.add("active");
+  document.getElementById("cSearch").value="";
+  const isSpecial=SPECIAL[c];
+  const list=BY_COUNTY[c]||[];
+  document.getElementById("cName").textContent=c;
+  const lead=list.filter(p=>p.role!=="議員").length;
+  document.getElementById("cSub").textContent=
+    `${isSpecial?"直轄市":"縣市"}　已公告專戶 ${list.length} 位（首長 ${lead}、議員 ${list.length-lead}）`;
+  document.getElementById("cOfficial").href="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0";
+  renderCounty(c,"");
+  window.scrollTo(0,0);
+}
+
+function renderCounty(c,kw){
+  const list=(BY_COUNTY[c]||[]).filter(p=>!kw||p.name.includes(kw));
+  const leads=list.filter(p=>p.role!=="議員");
+  const couns=list.filter(p=>p.role==="議員");
+  let html="";
+  if(leads.length){
+    html+=`<div class="group-title"><span class="pill">首長</span>縣市長／市長　${leads.length} 位</div><div class="cards">`;
+    leads.forEach(p=>html+=card(p,"lead"));
+    html+="</div>";
+  }
+  if(couns.length){
+    html+=`<div class="group-title"><span class="pill">議員</span>${SPECIAL[c]?"直轄市":"縣市"}議員　${couns.length} 位</div><div class="cards">`;
+    couns.forEach(p=>html+=card(p,"coun"));
+    html+="</div>";
+  }
+  if(!list.length){
+    html=`<div class="empty-note">查無「${kw}」，或此縣市暫無已公告之專戶資料。<br>可點右上角按鈕至監察院官網查詢最新公告。</div>`;
+  }
+  document.getElementById("cBody").innerHTML=html;
+}
+
+function card(p,type){
+  const safe=p.acct.replace(/'/g,"");
+  return `<div class="card">
+    <div class="name">${p.name}<span class="badge ${type}">${p.role}</span></div>
+    <div class="kv"><span class="k">金融機構</span><span class="v">${p.bank}</span></div>
+    <div class="kv"><span class="k">帳號</span><span class="v acct">${p.acct}</span>
+      <button class="copy" onclick="copyTxt('${safe}')">複製</button></div>
+    <div class="holder">戶名：${holderName(p)}</div>
+  </div>`;
+}
+
+function showHome(){
+  document.getElementById("county").classList.remove("active");
+  document.getElementById("home").classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function copyTxt(t){
+  navigator.clipboard&&navigator.clipboard.writeText(t);
+  const el=document.getElementById("toast");
+  el.textContent="已複製帳號："+t;
+  el.classList.add("show");
+  setTimeout(()=>el.classList.remove("show"),1600);
+}
+
+buildStats();
+buildMap();
+</script>
+</body>
+</html>
