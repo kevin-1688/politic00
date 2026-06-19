@@ -230,6 +230,7 @@
     <p>本站僅為公開資料之整理與導覽，所有帳號均為候選人依《政治獻金法》設立、經監察院許可公告之「收受捐款專戶」。資料可能因官方滾動更新而變動，正確性以監察院公告為準。</p>
     <p id="photoCredits" style="margin-top:10px;line-height:1.8"></p>
     <p style="margin-top:8px">社群連結：標示「臉書／IG」者為 <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a> 收錄之官方帳號（已排除同名他人與非人物項目）；其餘候選人提供「找臉書」搜尋連結。社群連結僅供參考，<b>請自行確認是否為候選人本人之官方帳號，慎防冒名／假帳號</b>。</p>
+    <p style="margin-top:8px">銀行代號為 3 碼金融機構代號（匯款時輸入「代號＋帳號」即可，免分行代碼）。資料對應自 FISC／HSBC 跨行轉帳金融機構代號一覽表。信用合作社、農漁會請於匯款介面選擇該機構；部分農會／漁會跨行另可使用代號 <b>600</b>（農會）／<b>951</b>（漁會）。匯款前仍請以監察院公告與銀行介面為準。</p>
   </footer>
 </div>
 
@@ -666,6 +667,31 @@ function fbFilter(input){
   root.querySelectorAll(".card").forEach(cd=>{ cd.style.display=(!kw||(cd.dataset.name||"").includes(kw))?"":"none"; });
 }
 
+/* 銀行（金融機構）3 碼代號：依金融機構名稱對應。來源：FISC／HSBC 跨行轉帳金融機構代號一覽表。
+   信用合作社、農漁會亦含其專屬代號（部分農會／漁會於跨行可另用 600／951）。 */
+const BANKCODE={
+"中華郵政":"700","臺灣銀行":"004","臺灣土地銀行":"005","合作金庫商業銀行":"006","第一商業銀行":"007",
+"華南商業銀行":"008","彰化商業銀行":"009","台北富邦商業銀行":"012","國泰世華商業銀行":"013","高雄銀行":"016",
+"兆豐國際商業銀行":"017","臺灣中小企業銀行":"050","台中商業銀行":"053","京城商業銀行":"054","華泰商業銀行":"102",
+"臺灣新光商業銀行":"103","陽信商業銀行":"108","板信商業銀行":"118","三信商業銀行":"147","聯邦商業銀行":"803",
+"元大商業銀行":"806","永豐商業銀行":"807","玉山商業銀行":"808","凱基商業銀行":"809","台新國際商業銀行":"812",
+"中國信託商業銀行":"822",
+"基隆第一信用合作社":"114","新竹第一信用合作社":"130","彰化第六信用合作社":"162","花蓮第二信用合作社":"216","新北市淡水信用合作社":"120",
+"臺中市豐原區農會":"612","桃園市龜山區農會":"768","新北市三重區農會":"776","臺南市龍崎區農會":"565","屏東縣內埔地區農會":"749",
+"雲林縣莿桐鄉農會":"616","雲林縣崙背鄉農會":"616","嘉義縣朴子市農會":"617","宜蘭縣頭城鎮農會":"585","宜蘭縣礁溪鄉農會":"587",
+"新北市瑞芳區漁會":"504"
+};
+function bankInst(b){
+  b=b.replace(/^\(農會\)/,"");
+  if(/中華郵政/.test(b))return "中華郵政";
+  let m=b.match(/^(.*?(?:商業銀行|銀行))/); if(m)return m[1];
+  m=b.match(/^(.*?信用合作社)/); if(m)return m[1];
+  m=b.match(/(.*?(?:區農會|地區農會|鄉農會|鎮農會|市農會))/); if(m)return m[1];
+  m=b.match(/(.*?漁會)/); if(m)return m[1];
+  return "";
+}
+function bankCode(b){ return BANKCODE[bankInst(b)]||""; }
+
 /* 社群帳號：來源為 Wikidata 標註之官方臉書(P2013)／IG(P2003)，僅取「直接命中、且為人物」之項目，
    並排除跨縣市同名者，降低連錯人風險。未收錄者於卡片提供「找臉書」搜尋連結。 */
 const SOCIAL={
@@ -680,10 +706,11 @@ function social(p){
   return h+'</div>';
 }
 function card(p,type){
-  const safe=p.acct.replace(/'/g,"");
+  const safe=p.acct.replace(/'/g,""), code=bankCode(p.bank);
   return `<div class="card" data-name="${p.name}">
     <div class="chead">${avatar(p)}<div class="name">${p.name}<span class="badge ${type}">${p.role}</span></div></div>
     <div class="kv"><span class="k">金融機構</span><span class="v">${p.bank}</span></div>
+    <div class="kv"><span class="k">銀行代號</span><span class="v acct">${code||"—"}</span>${code?`<button class="copy" onclick="copyTxt('${code}')">複製</button>`:""}</div>
     <div class="kv"><span class="k">帳號</span><span class="v acct">${p.acct}</span>
       <button class="copy" onclick="copyTxt('${safe}')">複製</button></div>
     <div class="holder">戶名：${holderName(p)}</div>
