@@ -1,4 +1,3 @@
-
 /* ===== 資料：name | county | bank | account | role  （115年/2026，監察院公告，查詢日2026-06-19） ===== */
 const RAW = `
 沈伯洋|臺北市|臺灣土地銀行營業部|041005616067|市長
@@ -505,7 +504,7 @@ const SOCIAL={
 "呂維胤":["564408486971527",""],
 "黃敬雅":["chingyataiwan","kerina_luvtw"],
 "陳乃瑜":["newsevalynchen",""],
-"朱正軒":["","chchu.tw"],
+"朱正軒":["chchu.tw","chchu.tw"],
 "蔡筱薇":["Hsiaoweitasi","nice_tn_wei"],
 "康裕成":["Kangyucheng.1",""],
 "施乃如":["9.so.good",""],
@@ -632,7 +631,29 @@ const SOCIAL={
 "陳怡潔@臺中市":["EJChenEJChen",""],
 "張耀中@臺中市":["TaichungBetter",""],
 "張志豪@臺北市":["firechc119",""],
-"張志豪@新北市":["chih.hao2017",""]
+"張志豪@新北市":["chih.hao2017",""],
+"沈家鳳":["katherine.bibi",""],
+"陳秋宏":["chen.qiu.hong.813471",""],
+"周嘉韋":["wayonly",""],
+"唐儀靜":["tangiching",""],
+"陳碧玉":["100049475036784",""],
+"鄭佳欣":["cch19790403",""],
+"余柷青":["yucc.tn",""],
+"謝舒凡":["HsiehShuFan",""],
+"陳金鐘":["supergoldenbell",""],
+"賴懋慶":["lai.mao.qing",""],
+"林建南":["lin.jian.nan.325225",""],
+"蔡秋蘭":["tsaichiulan",""],
+"李宗翰":["litsunghan",""],
+"郭鴻儀":["hungyi2018",""],
+"蔡蘇秋金":["Jiali14039",""],
+"周麗津":["mingdezhou0802",""],
+"陳秋萍":["chyouping",""],
+"王宣貿":["TainanRmao",""],
+"曾國維":["61577735596730",""],
+"沈震南":["61587722931384",""],
+"蔡麗青":["liching666",""],
+"林依婷":["01ting",""]
 };
 function social(p){
   const s=SOCIAL[p.name+"@"+p.county]||SOCIAL[p.name]||["",""], fb=s[0], ig=s[1];
