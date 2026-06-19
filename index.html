@@ -115,6 +115,12 @@
     background:var(--ac,#1b9c5d);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
   .avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
   .chead .name{margin:0}
+  .social{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;border-top:1px dashed var(--line);padding-top:9px}
+  .sbtn{font-size:11.5px;padding:3px 10px;border-radius:6px;text-decoration:none;font-weight:600;border:1px solid var(--line);line-height:1.7}
+  .sbtn.fb{background:#1877f2;color:#fff;border-color:#1877f2}
+  .sbtn.ig{background:linear-gradient(45deg,#f09433,#dc2743,#bc1888);color:#fff;border:none}
+  .sbtn.search{background:#fff;color:var(--muted)}
+  .sbtn.search:hover{border-color:var(--green);color:var(--green-d)}
   /* Fancybox 縣市彈窗 */
   .fb-county{background:#fff;border-radius:16px;padding:20px 22px 24px;max-width:940px;width:92vw;max-height:88vh;overflow:auto}
   .fb-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;
@@ -223,6 +229,7 @@
     </ul>
     <p>本站僅為公開資料之整理與導覽，所有帳號均為候選人依《政治獻金法》設立、經監察院許可公告之「收受捐款專戶」。資料可能因官方滾動更新而變動，正確性以監察院公告為準。</p>
     <p id="photoCredits" style="margin-top:10px;line-height:1.8"></p>
+    <p style="margin-top:8px">社群連結：標示「臉書／IG」者為 <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a> 收錄之官方帳號（已排除同名他人與非人物項目）；其餘候選人提供「找臉書」搜尋連結。社群連結僅供參考，<b>請自行確認是否為候選人本人之官方帳號，慎防冒名／假帳號</b>。</p>
   </footer>
 </div>
 
@@ -659,6 +666,19 @@ function fbFilter(input){
   root.querySelectorAll(".card").forEach(cd=>{ cd.style.display=(!kw||(cd.dataset.name||"").includes(kw))?"":"none"; });
 }
 
+/* 社群帳號：來源為 Wikidata 標註之官方臉書(P2013)／IG(P2003)，僅取「直接命中、且為人物」之項目，
+   並排除跨縣市同名者，降低連錯人風險。未收錄者於卡片提供「找臉書」搜尋連結。 */
+const SOCIAL={
+"謝志忠":["mang.guo.9659",""],"洪健益":["ryoudo",""],"高嘉瑜":["ntufishfans","ntufish"],"何欣純":["94achun","a_chun1973"],"陳淑華":["chenshuhua1970",""],"王閔生":["minsheng.wang",""],"黃守達":["taichungedada",""],"簡舒培":["justmatchtaipei","shupei1977"],"顏若芳":["234624180072135","yengafang"],"林德宇":["187rain",""],"林亮君":["sabrinalim.tw","sabrinalim.tw"],"周永鴻":["chouyunghong",""],"張銘祐":["mingyu19840717",""],"王立任":["wanglizen.coastline",""],"沈伯洋":["pumashen","pumashen"],"陳又新":["NewAgainChen",""],"施志昌":["ChihChang43",""],"何孟樺":["TaipeiHmh","taipeihmh"],"洪婉臻":["100038120630705","hungwanjen"],"陳聖文":["","sheng.wen.dw"],"林延鳳":["callmeifeng","callmeifeng"],"陳賢蔚":["bestserviceforTPE","alchen0712"],"劉耀仁":["LiuYaoRen",""],"陳雅倫":["sexymeo","ellen_chan_nga_lun"],"邱婷蔚":["TingweiChiu",""],"彭俊豪":["pengwintaoyuan",""],"蘇巧慧":["chiaohui.su","su.chiaohui"],"鄭宇恩":["yuencheng1986",""],"彭佳芸":["239410119414734","natally1013"],"魏筠":["WeiyunIN",""],"張錦豪":["zhenhaochangntc",""],"李余典":["lee.yudien",""],"張維倩":["attorneyivy",""],"廖宜琨":["kevin820705",""],"山田摩衣":["yamada.banqiao","yamada_banqiao"],"顏蔚慈":["ritayen.office",""],"李宇翔":["eliotyliii","realeliotyli"],"林秉宥":["100015507095868",""],"劉仁照":["vlog72",""],"黃瓊慧":["pupudog0308","qn_taiwan"],"許家睿":["taoyuanCJ","cjcheerup"],"張芬郁":["Changphenyu",""],"陳亭妃":["fififamily","chen_tingfei"],"賴瑞隆":["zenolai2","zenolai"],"卓冠廷":["TimCho0410","ktcho_0410"],"戴瑋姍":["wei3wei3","wei335453"],"呂維胤":["564408486971527",""],"黃敬雅":["chingyataiwan","kerina_luvtw"],"陳乃瑜":["newsevalynchen",""],"朱正軒":["","chchu.tw"],"蔡筱薇":["Hsiaoweitasi","nice_tn_wei"],"康裕成":["Kangyucheng.1",""],"施乃如":["9.so.good",""],"李喬如":["twsweetheart",""],"簡煥宗":["2014cky",""],"周春米":["RiceChouChunMi","choulittlerice"],"尹立":["yinlih",""],"林智鴻":["chihhung.lin.54",""],"凌子楚":["grantling0919",""],"王美惠":["ahueimoto","ahueimoto"],"莊競程":["Power3C","legislator2020"],"鄭孟洳":["mengju1214",""],"黃文益":["mdsn3838",""],"陳建名":["","oppyspace"],"童子瑋":["","tungtung_keelung"],"張之豪":["JihoTiun",""],"陳光軒":["","xuan741010"],"廖郁賢":["nppyuhsien","yuhsien.liao.npp"],"陳詩弦":["100063494659640",""],"楊子賢":["tzuhsienyangch",""],"蔡銘軒":["ming.xuan.169",""],"張欣倩":["zhangxinqian","chang_chienchien"],"歐陽霆":["OY2018","oyt1991"],"余筱菁":["Hakkameme.LoveTaiwan",""]
+};
+function social(p){
+  const s=SOCIAL[p.name]||["",""], fb=s[0], ig=s[1];
+  let h='<div class="social">';
+  if(fb) h+=`<a class="sbtn fb" href="https://www.facebook.com/${fb}" target="_blank" rel="noopener">臉書</a>`;
+  if(ig) h+=`<a class="sbtn ig" href="https://www.instagram.com/${ig}" target="_blank" rel="noopener">IG</a>`;
+  if(!fb) h+=`<a class="sbtn search" href="https://www.google.com/search?q=${encodeURIComponent(p.name+" "+p.county+" "+p.role+" 臉書")}" target="_blank" rel="noopener">🔍 找臉書</a>`;
+  return h+'</div>';
+}
 function card(p,type){
   const safe=p.acct.replace(/'/g,"");
   return `<div class="card" data-name="${p.name}">
@@ -667,6 +687,7 @@ function card(p,type){
     <div class="kv"><span class="k">帳號</span><span class="v acct">${p.acct}</span>
       <button class="copy" onclick="copyTxt('${safe}')">複製</button></div>
     <div class="holder">戶名：${holderName(p)}</div>
+    ${social(p)}
   </div>`;
 }
 
