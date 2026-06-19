@@ -3,7 +3,28 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>2026 民進黨提名人政治獻金專戶查詢｜全台縣市</title>
+<title>2026 民進黨提名人政治獻金專戶查詢｜全台各縣市縣市長與議員</title>
+<meta name="description" content="2026 地方選舉（民國115年）全台各縣市民主進步黨提名之縣市長與議員，政治獻金「收受捐款專戶」一覽：戶名、金融機構、帳號，資料整理自監察院公告（查詢日 2026/06/19）。捐款前請至監察院平台核對。">
+<meta name="keywords" content="政治獻金,政治獻金專戶,民進黨,2026地方選舉,九合一,縣市議員,縣市長,捐款帳戶,收款帳戶,監察院,115年,政治獻金法">
+<meta name="author" content="公開資料整理（資料來源：監察院）">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#147347">
+<link rel="canonical" href="./index.html">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="2026 民進黨提名人・政治獻金專戶查詢">
+<meta property="og:description" content="全台各縣市民進黨縣市長與議員的政治獻金收款專戶（戶名／銀行／帳號），資料來源：監察院。點台灣地圖即可查。">
+<meta property="og:image" content="og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="2026 民進黨提名人政治獻金專戶查詢">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="2026 政治獻金專戶查詢">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2026 民進黨提名人・政治獻金專戶查詢">
+<meta name="twitter:description" content="全台各縣市民進黨縣市長與議員的政治獻金收款專戶，資料來源：監察院。">
+<meta name="twitter:image" content="og-image.png">
 <style>
   :root{
     --green:#1b9c5d; --green-d:#147347; --ink:#1c2530; --muted:#5d6b7a;
@@ -44,6 +65,23 @@
   .tile.empty{opacity:.55;cursor:not-allowed}
   .tile.empty:hover{transform:none;border-color:var(--line);box-shadow:none}
   .tile .bar{position:absolute;left:0;bottom:0;height:3px;background:var(--green);width:0}
+  /* SVG geo map */
+  .svgwrap{position:relative;background:linear-gradient(180deg,#eef4f8,#e7eef3);border:1px solid var(--line);
+    border-radius:16px;padding:8px;margin:6px auto 0;max-width:560px}
+  #svgMap svg{width:100%;height:auto;display:block}
+  #svgMap path{cursor:pointer;transition:filter .12s,stroke .12s}
+  #svgMap path.has:hover{filter:brightness(1.12);stroke:#0d5132;stroke-width:1.6}
+  #svgMap path.nodata{cursor:default}
+  .maptip{position:absolute;pointer-events:none;background:#1c2530;color:#fff;font-size:13px;
+    padding:6px 10px;border-radius:8px;opacity:0;transform:translate(-50%,-130%);white-space:nowrap;z-index:5;transition:opacity .1s}
+  .maptip b{color:#8fe3b6}
+  .legend{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;
+    font-size:12px;color:var(--muted);margin:12px 0 2px}
+  .legend .sw{width:16px;height:12px;border-radius:3px;display:inline-block;vertical-align:-1px;margin-right:3px}
+  .src-btn{display:inline-flex;align-items:center;gap:6px;margin-top:14px;background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.35);color:#fff;text-decoration:none;font-size:13px;
+    padding:8px 14px;border-radius:9px;font-weight:600}
+  .src-btn:hover{background:rgba(255,255,255,.26)}
   /* COUNTY */
   .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--green-d);
     font-size:14px;cursor:pointer;padding:14px 0 6px;font-weight:600}
@@ -87,6 +125,8 @@
     <h1>2026 民進黨提名人・政治獻金專戶</h1>
     <p>全台各縣市民主進步黨提名之縣市長／議員　政治獻金「收款專戶」一覽（資料來源：監察院公告）</p>
     <div class="stat-row" id="statRow"></div>
+    <a class="src-btn" href="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0" target="_blank" rel="noopener">
+      資料來源・監察院政治獻金專戶公告查詢 ↗</a>
   </div>
 </header>
 
@@ -101,7 +141,15 @@
   <section id="home" class="view active">
     <div class="map-intro">
       <h2>請點選縣市</h2>
-      <p>依地理區排列，數字為「已公告專戶」之民進黨提名人數</p>
+      <p>點台灣地圖上的縣市，或下方清單，查看該縣市民進黨提名人的政治獻金專戶。<br>顏色越深＝已公告專戶人數越多；灰色為目前尚無公告。</p>
+    </div>
+    <div id="svgWrap" class="svgwrap">
+      <div id="svgMap"></div>
+      <div class="maptip" id="mapTip"></div>
+    </div>
+    <div class="legend" id="mapLegend"></div>
+    <div class="map-intro" style="margin-top:26px">
+      <h2 style="font-size:16px">縣市清單（依地理區）</h2>
     </div>
     <div id="mapArea"></div>
   </section>
@@ -532,8 +580,70 @@ function copyTxt(t){
   setTimeout(()=>el.classList.remove("show"),1600);
 }
 
+/* ===== 台灣地理輪廓 SVG 地圖（開檔即時抓取內政部縣市界資料並前端解碼） ===== */
+const MAP_W=600, MAP_H=860, MAP_PAD=14;
+const TOPO_URL="https://cdn.jsdelivr.net/npm/taiwan-atlas/counties-mercator-10t.json";
+const normCty = s => s.replace(/台/g,"臺"); // 圖資用「台」，本站資料用「臺」
+
+function countyCount(name){return (BY_COUNTY[name]||[]).length;}
+
+function lerpColor(t){ // 0..1 -> 淺綠到深綠
+  const L=[222,243,233], D=[15,107,65], k=Math.pow(t,0.6);
+  return `rgb(${L.map((c,i)=>Math.round(c+(D[i]-c)*k)).join(",")})`;
+}
+
+async function renderSvgMap(){
+  const wrap=document.getElementById("svgWrap"), legend=document.getElementById("mapLegend");
+  try{
+    const topo=await fetch(TOPO_URL).then(r=>{if(!r.ok)throw 0;return r.json();});
+    const tr=topo.transform;
+    const dec=arc=>{let x=0,y=0;return arc.map(p=>{x+=p[0];y+=p[1];return tr?[x*tr.scale[0]+tr.translate[0],y*tr.scale[1]+tr.translate[1]]:[p[0],p[1]];});};
+    const arcs=topo.arcs.map(dec);
+    const byIdx=i=>i<0?arcs[~i].slice().reverse():arcs[i];
+    const ring=idxs=>{let c=[];idxs.forEach((ai,k)=>{let a=byIdx(ai);if(k)a=a.slice(1);c=c.concat(a);});return c;};
+    const polys=g=>g.type==="Polygon"?g.arcs.map(ring):g.type==="MultiPolygon"?[].concat(...g.arcs.map(p=>p.map(ring))):[];
+    const geoms=topo.objects.counties.geometries;
+    const raw=geoms.map(g=>({name:normCty(g.properties.COUNTYNAME),rings:polys(g)}));
+    let minx=1e9,miny=1e9,maxx=-1e9,maxy=-1e9;
+    raw.forEach(c=>c.rings.forEach(r=>r.forEach(([x,y])=>{if(x<minx)minx=x;if(y<miny)miny=y;if(x>maxx)maxx=x;if(y>maxy)maxy=y;})));
+    const s=Math.min((MAP_W-2*MAP_PAD)/(maxx-minx),(MAP_H-2*MAP_PAD)/(maxy-miny));
+    const offx=MAP_PAD+((MAP_W-2*MAP_PAD)-(maxx-minx)*s)/2, offy=MAP_PAD+((MAP_H-2*MAP_PAD)-(maxy-miny)*s)/2;
+    const tx=x=>Math.round((x-minx)*s+offx), ty=y=>Math.round((y-miny)*s+offy);
+    const max=Math.max(1,...Object.keys(BY_COUNTY).map(countyCount));
+    let paths="";
+    raw.forEach(c=>{
+      let d="";
+      c.rings.forEach(r=>{if(r.length<3)return;let pts=r.map(([x,y])=>[tx(x),ty(y)]).filter((p,i,a)=>i===0||p[0]!==a[i-1][0]||p[1]!==a[i-1][1]);if(pts.length<3)return;d+="M"+pts.map(p=>p[0]+" "+p[1]).join("L")+"Z";});
+      if(!d)return;
+      const n=countyCount(c.name);
+      const fill=n>0?lerpColor(n/max):"#d3dce3";
+      const cls=n>0?"has":"nodata";
+      paths+=`<path d="${d}" fill="${fill}" stroke="#ffffff" stroke-width="1" class="${cls}" data-c="${c.name}" data-n="${n}"><title>${c.name}　${n>0?n+" 位":"尚無公告"}</title></path>`;
+    });
+    document.getElementById("svgMap").innerHTML=
+      `<svg viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="台灣各縣市政治獻金專戶地圖">${paths}</svg>`;
+    // 互動
+    const tip=document.getElementById("mapTip");
+    document.querySelectorAll("#svgMap path.has").forEach(p=>{
+      p.addEventListener("click",()=>showCounty(p.dataset.c));
+      p.addEventListener("mousemove",e=>{
+        const r=wrap.getBoundingClientRect();
+        tip.style.left=(e.clientX-r.left)+"px"; tip.style.top=(e.clientY-r.top)+"px";
+        tip.innerHTML=`${p.dataset.c}　<b>${p.dataset.n}</b> 位`; tip.style.opacity=1;
+      });
+      p.addEventListener("mouseleave",()=>tip.style.opacity=0);
+    });
+    legend.innerHTML=`已公告專戶人數：少 <span class="sw" style="background:${lerpColor(.15)}"></span><span class="sw" style="background:${lerpColor(.45)}"></span><span class="sw" style="background:${lerpColor(.8)}"></span><span class="sw" style="background:${lerpColor(1)}"></span> 多　·　<span class="sw" style="background:#d3dce3"></span>尚無公告`;
+  }catch(err){
+    // 無法載入圖資（離線等）→ 隱藏地圖，保留下方縣市清單
+    wrap.style.display="none"; legend.style.display="none";
+    document.querySelector("#home .map-intro p").innerHTML="（地圖需連線載入；目前改以下方清單呈現）點選縣市查看該縣市民進黨提名人的政治獻金專戶。";
+  }
+}
+
 buildStats();
 buildMap();
+renderSvgMap();
 </script>
 </body>
 </html>
