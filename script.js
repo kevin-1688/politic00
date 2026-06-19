@@ -631,7 +631,8 @@ const SOCIAL={
 "陳怡潔@臺中市":["EJChenEJChen",""],
 "張耀中@臺中市":["TaichungBetter",""],
 "張志豪@臺北市":["firechc119",""],
-"張志豪@新北市":["chih.hao2017",""]
+"張志豪@新北市":["chih.hao2017",""],
+"馬郁雯“:[馬郁雯-Wendy-100084505533044]
 };
 function social(p){
   const s=SOCIAL[p.name+"@"+p.county]||SOCIAL[p.name]||["",""], fb=s[0], ig=s[1];
