@@ -9,12 +9,16 @@
 <meta name="author" content="公開資料整理（資料來源：監察院）">
 <meta name="robots" content="index,follow">
 <meta name="theme-color" content="#147347">
-<link rel="canonical" href="./index.html">
+<link rel="canonical" href="https://politic00.vercel.app/">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <!-- Open Graph -->
 <meta property="og:type" content="website">
+<meta property="og:url" content="https://politic00.vercel.app/">
 <meta property="og:title" content="2026 民進黨提名人・政治獻金專戶查詢">
 <meta property="og:description" content="全台各縣市民進黨縣市長與議員的政治獻金收款專戶（戶名／銀行／帳號），資料來源：監察院。點台灣地圖即可查。">
-<meta property="og:image" content="og-image.png">
+<meta property="og:image" content="https://politic00.vercel.app/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="2026 民進黨提名人政治獻金專戶查詢">
@@ -24,7 +28,8 @@
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="2026 民進黨提名人・政治獻金專戶查詢">
 <meta name="twitter:description" content="全台各縣市民進黨縣市長與議員的政治獻金收款專戶，資料來源：監察院。">
-<meta name="twitter:image" content="og-image.png">
+<meta name="twitter:image" content="https://politic00.vercel.app/og-image.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css">
 <style>
   :root{
     --green:#1b9c5d; --green-d:#147347; --ink:#1c2530; --muted:#5d6b7a;
@@ -82,6 +87,47 @@
     border:1px solid rgba(255,255,255,.35);color:#fff;text-decoration:none;font-size:13px;
     padding:8px 14px;border-radius:9px;font-weight:600}
   .src-btn:hover{background:rgba(255,255,255,.26)}
+  #svgMap .cty-label{fill:#fff;stroke:#0d5132;stroke-width:3px;paint-order:stroke;
+    font-weight:700;font-size:15px;text-anchor:middle;pointer-events:none;font-family:inherit}
+  /* RWD：手機／平板 */
+  @media(max-width:640px){
+    header.site{padding:20px 0 18px}
+    header.site h1{font-size:20px}
+    header.site p{font-size:13px}
+    .wrap{padding:0 14px}
+    .stat b{font-size:18px}
+    .stat{padding:7px 11px}
+    .county-head h2{font-size:22px}
+    .county-head .official{font-size:12px;padding:6px 10px}
+    .cards{grid-template-columns:1fr}
+    .group-title{font-size:14px}
+    .disclaimer{font-size:12.5px;padding:11px 13px}
+    .map-intro h2{font-size:17px}
+    #svgMap .cty-label{font-size:17px}
+  }
+  @media(max-width:400px){
+    .tiles{grid-template-columns:1fr 1fr}
+  }
+  /* 候選人頭像版位 */
+  .chead{display:flex;align-items:center;gap:11px;margin-bottom:4px}
+  .avatar{width:46px;height:46px;border-radius:50%;flex:0 0 46px;display:flex;align-items:center;
+    justify-content:center;color:#fff;font-weight:700;font-size:19px;overflow:hidden;position:relative;
+    background:var(--ac,#1b9c5d);box-shadow:inset 0 0 0 1px rgba(0,0,0,.06)}
+  .avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .chead .name{margin:0}
+  /* Fancybox 縣市彈窗 */
+  .fb-county{background:#fff;border-radius:16px;padding:20px 22px 24px;max-width:940px;width:92vw;max-height:88vh;overflow:auto}
+  .fb-head{display:flex;justify-content:space-between;align-items:flex-end;gap:10px;flex-wrap:wrap;
+    border-bottom:2px solid var(--line);padding-bottom:12px}
+  .fb-head h2{margin:0;font-size:25px}
+  .fb-sub{color:var(--muted);font-size:13px;margin-top:3px}
+  .fb-search{width:100%;padding:10px 14px;border:1px solid var(--line);border-radius:10px;font-size:15px;margin:14px 0 2px}
+  .fb-county .cards{grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+  @media(max-width:640px){
+    .fb-county{padding:16px 14px 20px}
+    .fb-head h2{font-size:20px}
+    .fb-county .cards{grid-template-columns:1fr}
+  }
   /* COUNTY */
   .back{display:inline-flex;align-items:center;gap:6px;background:none;border:0;color:var(--green-d);
     font-size:14px;cursor:pointer;padding:14px 0 6px;font-weight:600}
@@ -115,7 +161,7 @@
   footer ul{margin:0 0 10px;padding-left:18px}
   footer a{word-break:break-all}
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
-    padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none}
+    padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:99999}
   .toast.show{opacity:.95}
 </style>
 </head>
@@ -181,6 +227,7 @@
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
 <script>
 /* ===== 資料：name | county | bank | account | role  （115年/2026，監察院公告，查詢日2026-06-19） ===== */
 const RAW = `
@@ -517,48 +564,77 @@ function buildMap(){
   document.getElementById("mapArea").innerHTML=html;
 }
 
-/* 縣市頁 */
+/* 縣市頁（卡片頭像 + Fancybox 彈窗） */
+const OFFICIAL_URL="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0";
+
+/* 照片掛勾：日後在同層 photos/ 放入「姓名.jpg」，把 PHOTOS_ENABLED 改成 true，
+   卡片頭像會自動換成該候選人照片（載入失敗則仍顯示姓名色塊）。 */
+const PHOTOS_ENABLED=false;
+function photoSrc(p){ return PHOTOS_ENABLED ? `photos/${encodeURIComponent(p.name)}.jpg` : null; }
+function avatarHue(name){ let h=0; for(const ch of name) h=(h*31+ch.charCodeAt(0))%360; return h; }
+function avatar(p){
+  const bg=`hsl(${avatarHue(p.name)},44%,42%)`, ini=p.name.slice(0,1), src=photoSrc(p);
+  const img=src?`<img src="${src}" alt="${p.name}" loading="lazy" onerror="this.remove()">`:"";
+  return `<div class="avatar" style="--ac:${bg}"><span>${ini}</span>${img}</div>`;
+}
+
+function countySubtitle(c){
+  const list=BY_COUNTY[c]||[], lead=list.filter(p=>p.role!=="議員").length;
+  return `${SPECIAL[c]?"直轄市":"縣市"}　已公告專戶 ${list.length} 位（首長 ${lead}、議員 ${list.length-lead}）`;
+}
+
+function countyInner(c,kw){
+  const list=(BY_COUNTY[c]||[]).filter(p=>!kw||p.name.includes(kw));
+  const leads=list.filter(p=>p.role!=="議員"), couns=list.filter(p=>p.role==="議員");
+  let html="";
+  if(leads.length){
+    html+=`<div class="group-title"><span class="pill">首長</span>縣市長／市長　${leads.length} 位</div><div class="cards">`;
+    leads.forEach(p=>html+=card(p,"lead")); html+="</div>";
+  }
+  if(couns.length){
+    html+=`<div class="group-title"><span class="pill">議員</span>${SPECIAL[c]?"直轄市":"縣市"}議員　${couns.length} 位</div><div class="cards">`;
+    couns.forEach(p=>html+=card(p,"coun")); html+="</div>";
+  }
+  if(!list.length) html=`<div class="empty-note">查無「${kw}」，或此縣市暫無已公告之專戶資料。<br>可至監察院官網查詢最新公告。</div>`;
+  return html;
+}
+
 function showCounty(c){
   CURRENT=c;
+  if(window.Fancybox){
+    const html=`<div class="fb-county" role="dialog" aria-label="${c} 政治獻金專戶">
+      <div class="fb-head">
+        <div><h2>${c}</h2><div class="fb-sub">${countySubtitle(c)}</div></div>
+        <a class="official" href="${OFFICIAL_URL}" target="_blank" rel="noopener">在監察院官網查詢／核對 ↗</a>
+      </div>
+      <input class="fb-search" placeholder="輸入姓名篩選…" oninput="fbFilter(this)" aria-label="姓名篩選">
+      <div class="fb-body">${countyInner(c,"")}</div>
+    </div>`;
+    window.Fancybox.show([{src:html,type:"html"}],{mainClass:"fb-pop",dragToClose:false});
+    return;
+  }
+  /* 後備：Fancybox 未載入（離線）時，改用整頁檢視 */
   document.getElementById("home").classList.remove("active");
   document.getElementById("county").classList.add("active");
   document.getElementById("cSearch").value="";
-  const isSpecial=SPECIAL[c];
-  const list=BY_COUNTY[c]||[];
   document.getElementById("cName").textContent=c;
-  const lead=list.filter(p=>p.role!=="議員").length;
-  document.getElementById("cSub").textContent=
-    `${isSpecial?"直轄市":"縣市"}　已公告專戶 ${list.length} 位（首長 ${lead}、議員 ${list.length-lead}）`;
-  document.getElementById("cOfficial").href="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0";
+  document.getElementById("cSub").textContent=countySubtitle(c);
+  document.getElementById("cOfficial").href=OFFICIAL_URL;
   renderCounty(c,"");
   window.scrollTo(0,0);
 }
 
-function renderCounty(c,kw){
-  const list=(BY_COUNTY[c]||[]).filter(p=>!kw||p.name.includes(kw));
-  const leads=list.filter(p=>p.role!=="議員");
-  const couns=list.filter(p=>p.role==="議員");
-  let html="";
-  if(leads.length){
-    html+=`<div class="group-title"><span class="pill">首長</span>縣市長／市長　${leads.length} 位</div><div class="cards">`;
-    leads.forEach(p=>html+=card(p,"lead"));
-    html+="</div>";
-  }
-  if(couns.length){
-    html+=`<div class="group-title"><span class="pill">議員</span>${SPECIAL[c]?"直轄市":"縣市"}議員　${couns.length} 位</div><div class="cards">`;
-    couns.forEach(p=>html+=card(p,"coun"));
-    html+="</div>";
-  }
-  if(!list.length){
-    html=`<div class="empty-note">查無「${kw}」，或此縣市暫無已公告之專戶資料。<br>可點右上角按鈕至監察院官網查詢最新公告。</div>`;
-  }
-  document.getElementById("cBody").innerHTML=html;
+function renderCounty(c,kw){ document.getElementById("cBody").innerHTML=countyInner(c,kw); }
+
+function fbFilter(input){
+  const root=input.closest(".fb-county"), kw=input.value.trim();
+  root.querySelectorAll(".card").forEach(cd=>{ cd.style.display=(!kw||(cd.dataset.name||"").includes(kw))?"":"none"; });
 }
 
 function card(p,type){
   const safe=p.acct.replace(/'/g,"");
-  return `<div class="card">
-    <div class="name">${p.name}<span class="badge ${type}">${p.role}</span></div>
+  return `<div class="card" data-name="${p.name}">
+    <div class="chead">${avatar(p)}<div class="name">${p.name}<span class="badge ${type}">${p.role}</span></div></div>
     <div class="kv"><span class="k">金融機構</span><span class="v">${p.bank}</span></div>
     <div class="kv"><span class="k">帳號</span><span class="v acct">${p.acct}</span>
       <button class="copy" onclick="copyTxt('${safe}')">複製</button></div>
@@ -620,8 +696,12 @@ async function renderSvgMap(){
       const cls=n>0?"has":"nodata";
       paths+=`<path d="${d}" fill="${fill}" stroke="#ffffff" stroke-width="1" class="${cls}" data-c="${c.name}" data-n="${n}"><title>${c.name}　${n>0?n+" 位":"尚無公告"}</title></path>`;
     });
+    // 六都名稱標籤（固定座標，對應 viewBox 0 0 600 860）
+    const LBL={"臺北市":[497,62],"新北市":[466,135],"桃園市":[408,131],"臺中市":[356,272],"臺南市":[223,520],"高雄市":[287,580]};
+    let labels="";
+    for(const k in LBL){ if(BY_COUNTY[k]){ labels+=`<text x="${LBL[k][0]}" y="${LBL[k][1]}" class="cty-label">${k}</text>`; } }
     document.getElementById("svgMap").innerHTML=
-      `<svg viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="台灣各縣市政治獻金專戶地圖">${paths}</svg>`;
+      `<svg viewBox="0 0 ${MAP_W} ${MAP_H}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="台灣各縣市政治獻金專戶地圖">${paths}${labels}</svg>`;
     // 互動
     const tip=document.getElementById("mapTip");
     document.querySelectorAll("#svgMap path.has").forEach(p=>{
