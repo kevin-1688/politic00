@@ -1,3 +1,4 @@
+
 /* ===== 資料：name | county | bank | account | role  （115年/2026，監察院公告，查詢日2026-06-19） ===== */
 const RAW = `
 沈伯洋|臺北市|臺灣土地銀行營業部|041005616067|市長
@@ -631,8 +632,7 @@ const SOCIAL={
 "陳怡潔@臺中市":["EJChenEJChen",""],
 "張耀中@臺中市":["TaichungBetter",""],
 "張志豪@臺北市":["firechc119",""],
-"張志豪@新北市":["chih.hao2017",""],
-"馬郁雯“:[馬郁雯-Wendy-100084505533044]
+"張志豪@新北市":["chih.hao2017",""]
 };
 function social(p){
   const s=SOCIAL[p.name+"@"+p.county]||SOCIAL[p.name]||["",""], fb=s[0], ig=s[1];
