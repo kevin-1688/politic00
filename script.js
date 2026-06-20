@@ -459,7 +459,7 @@ const SOCIAL={
 "高嘉瑜":["ntufishfans","ntufish"],
 "何欣純":["94achun","a_chun1973"],
 "陳淑華":["chenshuhua1970",""],
-"王閔生":["minsheng.wang",""],
+"王閔生":["iwangyou",""],
 "黃守達":["taichungedada",""],
 "簡舒培":["justmatchtaipei","shupei1977"],
 "顏若芳":["234624180072135","yengafang"],
