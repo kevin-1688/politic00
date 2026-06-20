@@ -1,4 +1,4 @@
-  :root{
+:root{
     --green:#1b9c5d; --green-d:#147347; --ink:#1c2530; --muted:#5d6b7a;
     --line:#e3e8ee; --bg:#f5f7f9; --card:#ffffff; --chip:#eaf6ef; --warn-bg:#fff7e6; --warn-line:#f0d28a;
   }
@@ -136,3 +136,15 @@
   .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;
     padding:9px 18px;border-radius:8px;font-size:13px;opacity:0;transition:.2s;pointer-events:none;z-index:99999}
   .toast.show{opacity:.95}
+
+/* 捐款／轉帳注意事項 */
+.notes{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0 0 18px;overflow:hidden}
+.notes>summary{cursor:pointer;padding:13px 16px;font-weight:700;color:var(--green-d);font-size:15px;list-style:none}
+.notes>summary::-webkit-details-marker{display:none}
+.notes>summary::before{content:"＋ ";color:var(--green)}
+.notes[open]>summary::before{content:"－ "}
+.notes-body{padding:0 18px 16px;font-size:13.5px;color:var(--ink);line-height:1.75}
+.notes-body h4{margin:12px 0 4px;font-size:14px;color:var(--green-d)}
+.notes-body ul{margin:0 0 6px;padding-left:20px}
+.notes-body li{margin:3px 0}
+.notes-foot{color:var(--muted);font-size:12px;margin-top:8px;border-top:1px dashed var(--line);padding-top:8px}
