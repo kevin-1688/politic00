@@ -713,7 +713,8 @@ const SOCIAL={
 "洪巧娟":["Chiao.Chuan925",""],
 "廖崑堯":["xuldjpul",""],
 "沈夙崢":["shensucheng",""],
-"王秋淑":["100006721425704",""]
+"王秋淑":["100006721425704",""],
+"郭品辰":["sidy36",""]
 };
 function social(p){
   const s=SOCIAL[p.name+"@"+p.county]||SOCIAL[p.name]||["",""], fb=s[0], ig=s[1];
