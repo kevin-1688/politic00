@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>2026 民進黨提名人政治獻金專戶查詢｜全台各縣市縣市長與議員</title>
+<meta name="description" content="2026 地方選舉（民國115年）全台各縣市民主進步黨提名之縣市長與議員，政治獻金「收受捐款專戶」一覽：戶名、金融機構、帳號，資料整理自監察院公告（查詢日 2026/06/19）。捐款前請至監察院平台核對。">
+<meta name="keywords" content="政治獻金,政治獻金專戶,民進黨,2026地方選舉,九合一,縣市議員,縣市長,捐款帳戶,收款帳戶,監察院,115年,政治獻金法">
+<meta name="author" content="公開資料整理（資料來源：監察院）">
+<meta name="robots" content="index,follow">
+<meta name="theme-color" content="#147347">
+<link rel="canonical" href="https://politic00.vercel.app/">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://politic00.vercel.app/">
+<meta property="og:title" content="2026 民進黨提名人・政治獻金專戶查詢">
+<meta property="og:description" content="全台各縣市民進黨縣市長與議員的政治獻金收款專戶（戶名／銀行／帳號），資料來源：監察院。點台灣地圖即可查。">
+<meta property="og:image" content="https://politic00.vercel.app/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="2026 民進黨提名人政治獻金專戶查詢">
+<meta property="og:locale" content="zh_TW">
+<meta property="og:site_name" content="2026 政治獻金專戶查詢">
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="2026 民進黨提名人・政治獻金專戶查詢">
+<meta name="twitter:description" content="全台各縣市民進黨縣市長與議員的政治獻金收款專戶，資料來源：監察院。">
+<meta name="twitter:image" content="https://politic00.vercel.app/og-image.png">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <h1>2026 民進黨提名人・政治獻金專戶</h1>
+    <p>全台各縣市民主進步黨提名之縣市長／議員　政治獻金「收款專戶」一覽（資料來源：監察院公告）</p>
+    <div class="stat-row" id="statRow"></div>
+    <a class="src-btn" href="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0" target="_blank" rel="noopener">
+      資料來源・監察院政治獻金專戶公告查詢 ↗</a>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="disclaimer">
+    <b>請務必閱讀：</b>本站資料整理自監察院「政治獻金專戶公告資料」公開查詢系統（查詢日：<b>2026/06/19</b>，民國115年地方選舉）。
+    黨籍係比對<b>民進黨提名／徵召名單</b>後篩選，官方公告本身不含黨籍欄位，可能有同名誤判。2026 選舉在 11 月舉行，專戶仍<b>陸續公告中</b>，名單未必齊全。
+    <b>捐款前，請務必至監察院平台再次核對戶名與帳號</b>，本站不對任何匯款結果負責。
+  </div>
+
+  <details class="notes">
+    <summary>捐款／轉帳注意事項（點開）</summary>
+    <div class="notes-body">
+      <h4>怎麼匯款</h4>
+      <ul>
+        <li>跨行轉帳／ATM／網銀,輸入「<b>銀行代號(3碼)＋帳號</b>」即可,免分行代碼。</li>
+        <li>信用合作社、農漁會請於匯款介面<b>選擇該機構</b>;部分農會／漁會跨行另可用代號 <b>600</b>(農)／<b>951</b>(漁)。</li>
+        <li>匯款前<b>核對戶名</b>:專戶戶名為「115年○○○議員／縣市長擬參選人XXX政治獻金專戶」,須與監察院公告一致,<b>慎防冒名假帳號</b>。</li>
+      </ul>
+      <h4>《政治獻金法》重點（務必遵守）</h4>
+      <ul>
+        <li><b>留真實身分</b>:捐贈須可查證身分。請於轉帳備註或主動提供候選人姓名、身分證字號、地址、電話、金額,並索取收據。</li>
+        <li><b>不得匿名／借名</b>:不得以本人以外名義捐贈;匿名捐贈每筆不得超過 <b>1 萬元</b>。</li>
+        <li><b>個人捐贈上限</b>:對<b>同一</b>擬參選人每年 ≤ <b>10 萬元</b>;對<b>不同</b>擬參選人每年合計 ≤ <b>30 萬元</b>。</li>
+        <li><b>不得捐贈者</b>(摘要):公營事業、政府捐助成立之財團法人、與政府有重大採購／契約且履約中者、累積虧損未彌補之營利事業,以及外國與大陸／港澳之個人‧法人‧團體等（《政治獻金法》第7條）。</li>
+      </ul>
+      <p class="notes-foot">以上為一般說明,實際以《政治獻金法》及監察院公告為準;本站僅整理公開資料、非候選人委託,匯款行為與結果請自行負責。</p>
+    </div>
+  </details>
+
+  <!-- HOME -->
+  <section id="home" class="view active">
+    <div class="map-intro">
+      <h2>請點選縣市</h2>
+      <p>點台灣地圖上的縣市，或下方清單，查看該縣市民進黨提名人的政治獻金專戶。<br>顏色越深＝已公告專戶人數越多；灰色為目前尚無公告。</p>
+    </div>
+    <div id="svgWrap" class="svgwrap">
+      <div id="svgMap"></div>
+      <div class="maptip" id="mapTip"></div>
+    </div>
+    <div class="legend" id="mapLegend"></div>
+    <div class="map-intro" style="margin-top:26px">
+      <h2 style="font-size:16px">縣市清單（依地理區）</h2>
+    </div>
+    <div id="mapArea"></div>
+  </section>
+
+  <!-- COUNTY -->
+  <section id="county" class="view">
+    <button class="back" onclick="showHome()">← 返回地圖</button>
+    <div class="county-head">
+      <div>
+        <h2 id="cName"></h2>
+        <div class="sub" id="cSub"></div>
+      </div>
+      <a class="official" id="cOfficial" target="_blank" rel="noopener">在監察院官網查詢／核對 ↗</a>
+    </div>
+    <div class="searchbar"><input id="cSearch" placeholder="輸入姓名篩選…" oninput="renderCounty(CURRENT,this.value)"></div>
+    <div id="cBody"></div>
+  </section>
+
+  <footer>
+    <h3>資料來源與方法</h3>
+    <ul>
+      <li>政治獻金專戶（戶名／金融機構／帳號）：<a href="https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0" target="_blank" rel="noopener">監察院陽光法令主題網－政治獻金專戶公告資料</a>（115年直轄市市長／縣市長／直轄市議員／縣市議員選舉，擬參選人類別）。</li>
+      <li>會計報告書另可查：<a href="https://ardata.cy.gov.tw" target="_blank" rel="noopener">監察院政治獻金公開查閱平臺</a>。</li>
+      <li>民進黨提名／徵召名單：<a href="https://zh.wikipedia.org/wiki/2026年地方公職人員選舉民主進步黨提名結果列表" target="_blank" rel="noopener">維基百科彙整</a>（引用中央社、自由時報、民主進步黨官網等）。</li>
+    </ul>
+    <p>本站僅為公開資料之整理與導覽，所有帳號均為候選人依《政治獻金法》設立、經監察院許可公告之「收受捐款專戶」。資料可能因官方滾動更新而變動，正確性以監察院公告為準。</p>
+    <p id="photoCredits" style="margin-top:10px;line-height:1.8"></p>
+    <p style="margin-top:8px">社群連結：標示「臉書／IG」者為 <a href="https://www.wikidata.org/" target="_blank" rel="noopener">Wikidata</a> 收錄之官方帳號（已排除同名他人與非人物項目）；其餘候選人提供「找臉書」搜尋連結。社群連結僅供參考，<b>請自行確認是否為候選人本人之官方帳號，慎防冒名／假帳號</b>。</p>
+    <p style="margin-top:8px">銀行代號為 3 碼金融機構代號（匯款時輸入「代號＋帳號」即可，免分行代碼）。資料對應自 FISC／HSBC 跨行轉帳金融機構代號一覽表。信用合作社、農漁會請於匯款介面選擇該機構；部分農會／漁會跨行另可使用代號 <b>600</b>（農會）／<b>951</b>（漁會）。匯款前仍請以監察院公告與銀行介面為準。</p>
+  </footer>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
