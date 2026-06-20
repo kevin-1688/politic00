@@ -558,7 +558,7 @@ const SOCIAL={
 "林裔綺":["lin.yi.qi.21102",""],
 "翁震州":["wongjhenjhou",""],
 "李昆穎":["yingforfuture",""],
-"陳俊諺":["chen.jun.yan.208401",""],
+"陳俊諺":["profile.php?id=61587938910044",""],
 "黃淑君":["shuchun2022",""],
 "黃世杰":["SCHuangLawyer",""],
 "黃崇真":["cchuang0223",""],
@@ -674,7 +674,7 @@ const SOCIAL={
 "邱俊憲":["khhchiu",""],
 "湯詠瑜":["tang162",""],
 "張耀中@高雄市":["61572120912600",""],
-"巫振興":["","fuyan_ici"],
+"巫振興":["100000377862064","fuyan_ici"],
 "楊玲宜":["Hsinchu.LingYi",""],
 "劉彥伶":["captainGINAonduty",""],
 "林士凱":["linshihkaii",""],
@@ -712,7 +712,8 @@ const SOCIAL={
 "陳玉鈴":["100068750604092",""],
 "洪巧娟":["Chiao.Chuan925",""],
 "廖崑堯":["xuldjpul",""],
-"沈夙崢":["shensucheng",""]
+"沈夙崢":["shensucheng",""],
+"王秋淑":["100006721425704",""]
 };
 function social(p){
   const s=SOCIAL[p.name+"@"+p.county]||SOCIAL[p.name]||["",""], fb=s[0], ig=s[1];
