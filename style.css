@@ -1,4 +1,4 @@
-  :root{
+:root{
     --green:#1b9c5d; --green-d:#147347; --ink:#1c2530; --muted:#5d6b7a;
     --line:#e3e8ee; --bg:#f5f7f9; --card:#ffffff; --chip:#eaf6ef; --warn-bg:#fff7e6; --warn-line:#f0d28a;
   }
@@ -171,3 +171,12 @@
 .m-dlabel{font-size:12px;color:var(--green-d);font-weight:700;letter-spacing:2px}
 .m-dval{font-size:19px;font-weight:700;color:var(--ink);margin-top:5px;line-height:1.45}
 @media(max-width:640px){.fb-member{padding:18px 16px}.m-name{font-size:19px}.m-dval{font-size:17px}}
+
+/* 一級卡片：整張可點看專戶 */
+.card.clickable{cursor:pointer;transition:border-color .14s,box-shadow .14s,transform .14s}
+.card.clickable:hover{border-color:var(--green);box-shadow:0 6px 18px rgba(20,115,71,.12);transform:translateY(-1px)}
+.card.clickable .chead{cursor:pointer}
+.card-cta{margin-top:11px;border-top:1px dashed var(--line);padding-top:9px;text-align:right;color:var(--green-d);font-weight:700;font-size:13px}
+.m-acct{background:var(--chip);border:1px solid #cfe9da;border-radius:12px;padding:14px 16px;margin:14px 0}
+.m-acct .kv{font-size:13.5px}
+.m-acct .holder{margin-top:9px}
