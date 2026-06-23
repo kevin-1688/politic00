@@ -724,35 +724,34 @@ function social(p){
   if(!fb) h+=`<a class="sbtn search" href="https://www.google.com/search?q=${encodeURIComponent(p.name+" "+p.county+" "+p.role+" 臉書")}" target="_blank" rel="noopener">🔍 找臉書</a>`;
   return h+'</div>';
 }
+function distLabel(p){
+  return p.role!=="議員" ? "縣市長／市長（全縣市）"
+    : (p.dist==="選區待確認" ? "選區待確認" : (p.dist||"—"));
+}
 function showMember(name,county){
   const p=(BY_COUNTY[county]||[]).find(x=>x.name===name);
   if(!p||!window.Fancybox) return;
-  const distLine = p.role!=="議員" ? "縣市長／市長（全縣市）"
-    : (p.dist==="選區待確認" ? "選區待確認（請以中選會公告為準）" : (p.county+" "+p.dist));
   const safe=p.acct.replace(/'/g,""), code=bankCode(p.bank);
+  const dl=distLabel(p);
+  const sub=p.county+(dl&&dl!=="—"?(" ・ "+dl):"");
   const html=`<div class="fb-member">
-    <div class="m-top">${avatar(p)}<div><div class="m-name">${p.name}<span class="badge ${p.role==="議員"?"coun":"lead"}">${p.role}</span></div><div class="m-cty">${p.county}</div></div></div>
-    <div class="m-dist"><div class="m-dlabel">選舉區</div><div class="m-dval">${distLine}</div></div>
-    <div class="m-info">
+    <div class="m-top">${avatar(p)}<div><div class="m-name">${p.name}<span class="badge ${p.role==="議員"?"coun":"lead"}">${p.role}</span></div><div class="m-cty">${sub}</div></div></div>
+    <div class="m-acct">
+      <div class="m-dlabel">政治獻金專戶</div>
       <div class="kv"><span class="k">金融機構</span><span class="v">${p.bank}</span></div>
       <div class="kv"><span class="k">銀行代號</span><span class="v acct">${code||"—"}</span>${code?`<button class="copy" onclick="copyTxt('${code}')">複製</button>`:""}</div>
       <div class="kv"><span class="k">帳號</span><span class="v acct">${p.acct}</span><button class="copy" onclick="copyTxt('${safe}')">複製</button></div>
       <div class="holder">戶名：${holderName(p)}</div>
-      ${social(p)}
     </div>
+    ${social(p)}
   </div>`;
   window.Fancybox.show([{src:html,type:"html"}],{mainClass:"fb-pop"});
 }
 function card(p,type){
-  const safe=p.acct.replace(/'/g,""), code=bankCode(p.bank);
-  return `<div class="card" data-name="${p.name}">
-    <div class="chead" onclick="showMember('${p.name.replace(/'/g,"")}','${p.county}')" title="點看選區與詳情">${avatar(p)}<div class="name">${p.name}<span class="badge ${type}">${p.role}</span><span class="more">${type==="coun"?"選區 ›":"詳情 ›"}</span></div></div>
-    <div class="kv"><span class="k">金融機構</span><span class="v">${p.bank}</span></div>
-    <div class="kv"><span class="k">銀行代號</span><span class="v acct">${code||"—"}</span>${code?`<button class="copy" onclick="copyTxt('${code}')">複製</button>`:""}</div>
-    <div class="kv"><span class="k">帳號</span><span class="v acct">${p.acct}</span>
-      <button class="copy" onclick="copyTxt('${safe}')">複製</button></div>
-    <div class="holder">戶名：${holderName(p)}</div>
-    ${social(p)}
+  return `<div class="card clickable" data-name="${p.name}" onclick="showMember('${p.name.replace(/'/g,"")}','${p.county}')" title="點看政治獻金專戶">
+    <div class="chead">${avatar(p)}<div class="name">${p.name}<span class="badge ${type}">${p.role}</span></div></div>
+    <div class="kv"><span class="k">選區</span><span class="v">${distLabel(p)}</span></div>
+    <div class="card-cta">政治獻金專戶 ›</div>
   </div>`;
 }
 
