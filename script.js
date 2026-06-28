@@ -484,11 +484,14 @@ const PHOTO_CREDIT={
  "莊競程":["中華民國立法院","Attribution"],"沈伯洋":["立法院","Attribution"],"何孟樺":["Johnason Chen","CC BY 2.0"],
  "江肇國":["中華民國內政部","Attribution"],"童子瑋":["CHENGYITERRYLiN","CC BY-SA 4.0"]
 };
+/* 候選人自行提供之照片（本地檔，置於 img/） */
+const LOCAL_PHOTOS={"羅文崇":"https://luo-wen-chong.vercel.app/images/hero-portrait-bust-v2.webp"};
 function avatarHue(name){ let h=0; for(const ch of name) h=(h*31+ch.charCodeAt(0))%360; return h; }
 function avatar(p){
   const bg=`hsl(${avatarHue(p.name)},44%,42%)`, ini=esc(p.name.slice(0,1));
   const ph=(window.PHOTOS||{})[p.name];
-  const img=ph?`<img src="${esc(ph.src)}" alt="${esc(p.name)} 照片" loading="lazy" onerror="this.remove()">`:"";
+  const src=(typeof LOCAL_PHOTOS!=="undefined"&&LOCAL_PHOTOS[p.name])||(ph&&ph.src)||"";
+  const img=src?`<img src="${esc(src)}" alt="${esc(p.name)} 照片" loading="lazy" onerror="this.remove()">`:"";
   return `<div class="avatar" style="--ac:${bg}"><span>${ini}</span>${img}</div>`;
 }
 async function loadPhotos(){
@@ -858,14 +861,28 @@ const SOCIAL={
 "廖崑堯":["xuldjpul",""],
 "沈夙崢":["shensucheng",""],
 "王秋淑":["100006721425704",""],
-"郭品辰":["sidy36",""]
+"郭品辰":["sidy36",""],
+"余信憲@桃園市":["taoyuanilive","yu.councilor"],
+"呂宇晟@桃園市":["2022luyucheng","lu_yu_cheng"],
+"吳通龍@臺南市":["曾文區-台南市議員-吳通龍-100064757707225",""],
+"邱莉莉@臺南市":["liliservice2012",""],
+"黃彥毓@高雄市":["DPPKHVincentHuang",""],
+"羅貴星@苗栗縣":["lokuehsing",""],
+"徐筱菁@苗栗縣":["100005632667684",""],
+"鄭宏輝@新竹市":["service.chh",""],
+"劉崇顯@新竹市":["iHsinChu.Liu","ihsinchu.liu"],
+"施偉政@基隆市":["shihweijeng","weijeng616"],
+"羅文崇@新北市":["luo.wen.chong.2025","wenchonglo"]
 };
+const WEBSITE={"羅文崇@新北市":"https://luo-wen-chong.vercel.app/"};
 function social(p){
   const s=SOCIAL[p.name+"@"+p.county]||(hasAcct(p)?(SOCIAL[p.name]||["",""]):["",""]), fb=s[0], ig=s[1];
+  const web=(typeof WEBSITE!=="undefined")&&(WEBSITE[p.name+"@"+p.county]||(hasAcct(p)?WEBSITE[p.name]:""));
   let h='<div class="social">';
+  if(web) h+=`<a class="sbtn web" href="${esc(web)}" target="_blank" rel="noopener">🌐 個人網站</a>`;
   if(fb) h+=`<a class="sbtn fb" href="https://www.facebook.com/${fb}" target="_blank" rel="noopener">臉書</a>`;
   if(ig) h+=`<a class="sbtn ig" href="https://www.instagram.com/${ig}" target="_blank" rel="noopener">IG</a>`;
-  if(!fb) h+=`<a class="sbtn search" href="https://www.google.com/search?q=${encodeURIComponent(p.name+" "+p.county+" "+p.role+" 臉書")}" target="_blank" rel="noopener">🔍 找臉書</a>`;
+  if(!fb&&!web) h+=`<a class="sbtn search" href="https://www.google.com/search?q=${encodeURIComponent(p.name+" "+p.county+" "+p.role+" 臉書")}" target="_blank" rel="noopener">🔍 找臉書</a>`;
   return h+'</div>';
 }
 function distLabel(p){
