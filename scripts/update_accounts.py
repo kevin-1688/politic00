@@ -23,7 +23,10 @@ PREFIX = "ctl00$ContentPlaceHolder_PageContent_title$"
 ELECTION_TYPES = ["115103", "115104", "115105", "115106"]
 SCRIPT_JS = "script.js"
 COMMIT_MSG = "commit_msg.txt"
-HEADERS = {"User-Agent": "Mozilla/5.0 (politic00 auto-updater; github.com/kevin-1688/politic00)"}
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Safari/537.36",
+    "Referer": "https://sunshine.cy.gov.tw/PAQuery.aspx?n=21&sms=0",
+}
 TIMEOUT = 60
 
 
@@ -51,7 +54,6 @@ def fetch_election(sess: requests.Session, etype: str) -> list[dict]:
     data[PREFIX + "ddlAccountType"] = "擬參選人"
     data[PREFIX + "txtCategory"] = ""
     data[PREFIX + "ddlElectionType"] = etype
-    data[PREFIX + "txtKeyword"] = ""
     data[PREFIX + "btnSend"] = "查詢"
 
     r2 = sess.post(BASE, data=data, timeout=TIMEOUT)
