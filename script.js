@@ -650,7 +650,7 @@ function bankCode(b){ return BANKCODE[bankInst(b)]||""; }
 /* 社群帳號：來源為 Wikidata 標註之官方臉書(P2013)／IG(P2003)，僅取「直接命中、且為人物」之項目，
    並排除跨縣市同名者，降低連錯人風險。未收錄者於卡片提供「找臉書」搜尋連結。 */
 const SOCIAL={
-"陳品安“["pinanchen064",""],
+"陳品安“:["pinanchen064",""],
 "鄭朝方":["newchange13",""],
 "謝志忠":["mang.guo.9659",""],
 "洪健益":["ryoudo",""],
